@@ -5,13 +5,13 @@
 int main (int argc, char *argv[])
 {
 
-    Timer timer;
+    // Timer timer;
     cudaError_t cuda_ret;
 
     // Initialize host variables ----------------------------------------------
 
     printf("\nSetting up the problem..."); fflush(stdout);
-    startTime(&timer);
+    // startTime(&timer);
 
     float *A_h, *B_h, *C_h;
     float *A_d, *B_d, *C_d;
@@ -44,14 +44,14 @@ int main (int argc, char *argv[])
 
     C_h = (float*) malloc( sizeof(float)*mat_sz );
 
-    stopTime(&timer); printf("%f s\n", elapsedTime(timer));
+    // stopTime(&timer); printf("%f s\n", elapsedTime(timer));
     printf("    A: %u x %u\n    B: %u x %u\n    C: %u x %u\n", matDim, matDim,
         matDim, matDim, matDim, matDim);
 
     // Allocate device variables ----------------------------------------------
 
     printf("Allocating device variables..."); fflush(stdout);
-    startTime(&timer);
+    // startTime(&timer);
 
     /*************************************************************************/    
     
@@ -65,11 +65,11 @@ int main (int argc, char *argv[])
 
     /*************************************************************************/
     cudaDeviceSynchronize();
-    stopTime(&timer); printf("%f s\n", elapsedTime(timer));
+    // stopTime(&timer); printf("%f s\n", elapsedTime(timer));
 
     // Copy host variables to device ------------------------------------------
     printf("Copying data from host to device..."); fflush(stdout);
-    startTime(&timer);
+    // startTime(&timer);
 	
     /*************************************************************************/
     //INSERT CODE HERE
@@ -80,20 +80,20 @@ int main (int argc, char *argv[])
 
     /*************************************************************************/
     cudaDeviceSynchronize();
-    stopTime(&timer); printf("%f s\n", elapsedTime(timer));
+    // stopTime(&timer); printf("%f s\n", elapsedTime(timer));
 
     // Launch kernel using standard mat-add interface ---------------------------
     printf("Launching kernel..."); fflush(stdout);
-    startTime(&timer);
+    // startTime(&timer);
     basicMatAdd(mat_sz, A_d, B_d, C_d);
 
     cuda_ret = cudaDeviceSynchronize();
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
-    stopTime(&timer); printf("%f s\n", elapsedTime(timer));
+    // stopTime(&timer); printf("%f s\n", elapsedTime(timer));
 
     // Copy device variables from host ----------------------------------------
     printf("Copying data from device to host..."); fflush(stdout);
-    startTime(&timer);
+    // startTime(&timer);
 
     /*************************************************************************/
     //INSERT CODE HERE
@@ -104,13 +104,13 @@ int main (int argc, char *argv[])
     cudaMemcpy(C_h, C_d, sizeof(float)*mat_sz, cudaMemcpyDeviceToHost);
     /*************************************************************************/
     cudaDeviceSynchronize();
-    stopTime(&timer); printf("%f s\n", elapsedTime(timer));
+    // stopTime(&timer); printf("%f s\n", elapsedTime(timer));
 
     // Verify correctness -----------------------------------------------------
 
     printf("Verifying results...\n"); fflush(stdout);
 
-    verify(A_h, B_h, C_h, matDim);
+    // verify(A_h, B_h, C_h, matDim);
 
 
     // Free memory ------------------------------------------------------------
