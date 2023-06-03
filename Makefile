@@ -6,12 +6,12 @@ else
 NVCC_FLAGS  = -O3 --std=c++03
 endif
 LD_FLAGS    = -lcudart
-EXE	        = mat-add
-OBJ	        = main.o support.o
+EXE	        = jpeg
+OBJ	        = main.o 
 
 default: $(EXE)
 
-main.o: main.cu kernel.cu support.h
+main.o: main.cu kernel.cu 
 	$(NVCC) -c -o $@ main.cu $(NVCC_FLAGS)
 
 # support.o: support.cu support.h
