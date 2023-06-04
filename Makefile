@@ -11,7 +11,7 @@ OBJ             = main.o
 default: $(EXE)
 
 main.o: ./src/main.cu ./src/kernel.cu
-        $(NVCC) -c -o $@ ./src/main.cu $(NVCC_FLAGS) `pkg-config --cflags opencv`
+	$(NVCC) -c -o $@ ./src/main.cu $(NVCC_FLAGS) `pkg-config --cflags opencv`
 
 # support.o: support.cu support.h
 #       $(NVCC) -c -o $@ support.cu $(NVCC_FLAGS)
