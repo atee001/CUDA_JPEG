@@ -8,6 +8,9 @@ int main (int argc, char *argv[])
     // Timer timer;
     cudaError_t cuda_ret;
     // Initialize host variables ----------------------------------------------
+    cv::Mat image = cv::imread("lena_std.tif");    
+    cv::imshow("Image", image);
+    cv::waitKey(0);
 
     printf("\nSetting up the problem..."); fflush(stdout);
     // startTime(&timer);

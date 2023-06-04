@@ -25,9 +25,6 @@ __global__ void matAdd(int dim, const float *A, const float *B, float* C) {
 void basicMatAdd(int dim, const float *A, const float *B, float *C)
 {
     // Initialize thread block and kernel grid dimensions ---------------------
-    cv::Mat image = cv::imread("lena_std.tif");    
-    cv::imshow("Image", image);
-    cv::waitKey(0);
 
 
 }
