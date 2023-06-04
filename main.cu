@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "kernel.cu"
+#include <opencv2/opencv.hpp>
 
 int main (int argc, char *argv[])
 {
