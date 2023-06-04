@@ -7,7 +7,6 @@ int main (int argc, char *argv[])
 
     // Timer timer;
     cudaError_t cuda_ret;
-
     // Initialize host variables ----------------------------------------------
 
     printf("\nSetting up the problem..."); fflush(stdout);
