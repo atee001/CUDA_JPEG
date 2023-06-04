@@ -1,4 +1,3 @@
-
 NVCC        = nvcc
 ifeq (,$(shell which nvprof))
 NVCC_FLAGS  = -O3
