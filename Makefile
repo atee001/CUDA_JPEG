@@ -17,7 +17,7 @@ main.o: ./src/main.cu ./src/kernel.cu
 #       $(NVCC) -c -o $@ support.cu $(NVCC_FLAGS)
 
 $(EXE): $(OBJ)
-        $(NVCC) $(OBJ) -o $(EXE) $(LD_FLAGS)
+	$(NVCC) $(OBJ) -o $(EXE) $(LD_FLAGS)
 
 clean:
-        rm -rf *.o $(EXE)
+	rm -rf *.o $(EXE)
