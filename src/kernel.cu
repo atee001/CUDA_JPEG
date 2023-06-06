@@ -6,6 +6,9 @@
 
 __global__ void matAdd(int dim, const float *A, const float *B, float* C) {
 
+    __shared__ extern cache_one[][];
+    __shared__ extern cache_two[][];
+
     /********************************************************************
      *
      * Compute C = A + B
@@ -21,6 +24,12 @@ __global__ void matAdd(int dim, const float *A, const float *B, float* C) {
 
     /*************************************************************************/
 
+
+
+
+
+
+
 }
 
 void basicMatAdd(int dim, const float *A, const float *B, float *C)
@@ -29,8 +38,7 @@ void basicMatAdd(int dim, const float *A, const float *B, float *C)
 
     dim3 threadsPerBlock(TILE_SIZE, TILE_SIZE, 1);
     dim3 blocksPerDim(ceil(dim/(float)threadsPerBlock.x), ceil(dim/(float)threadsPerBlock.y), 1);
-    matAdd<<<blocksPerDim, TILE_SIZE>>>(dim, A, B, C);
-
+    matAdd<<<blocksPerDim, TILE_SIZE, sizeof(float)*2*2*2>>>(dim, A, B, C);
 
 }
 
