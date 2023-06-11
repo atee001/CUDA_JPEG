@@ -1,17 +1,18 @@
 NVCC        = nvcc
+OPENCV_INC = -I/usr/include/opencv
 ifeq (,$(shell which nvprof))
 NVCC_FLAGS  = -O3 
 else
-NVCC_FLAGS  = -O3  --std=c++03
+NVCC_FLAGS  = -O3  --std=c++03 
 endif
-LD_FLAGS    = -lcudart 
+LD_FLAGS    = -lcudart $(OPENCV_LIBS)
 EXE	        = jpeg
 OBJ	        = main.o 
 
 default: $(EXE)
 
 main.o: ./src/main.cu ./src/kernel.cu 
-	$(NVCC) -c -o $@ ./src/main.cu $(NVCC_FLAGS)
+	$(NVCC) -c -o $@ ./src/main.cu $(NVCC_FLAGS) $(OPENCV_INC)
 
 #support.o: support.cu support.h
 #	$(NVCC) -c -o $@ support.cu $(NVCC_FLAGS)
