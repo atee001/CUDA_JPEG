@@ -10,8 +10,8 @@ OBJ	        = main.o
 
 default: $(EXE)
 
-main.o: main.cu kernel.cu 
-	$(NVCC) -c -o $@ main.cu $(NVCC_FLAGS)
+main.o: ./src/main.cu ./src/kernel.cu 
+	$(NVCC) -c -o $@ ./src/main.cu $(NVCC_FLAGS)
 
 #support.o: support.cu support.h
 #	$(NVCC) -c -o $@ support.cu $(NVCC_FLAGS)
