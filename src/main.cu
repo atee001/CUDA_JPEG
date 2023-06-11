@@ -11,7 +11,7 @@ int main (int argc, char *argv[])
     cv::Mat image = cv::imread("/home/eemaj/atee/ee147/jpeg/CUDA_JPEG/images/lena_std.tif");    
     if (image.empty())
     {
-        printf("Failed to read image exitting...")
+        printf("Failed to read image exitting...");
         return 1;
     }
 
