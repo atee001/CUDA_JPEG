@@ -42,7 +42,7 @@ int main (int argc, char *argv[])
       "\n");
         exit(0);
     }
-    Mat image_float; 
+    cv::Mat image_float; 
     image.convertTo(image_float, CV_32F);
     float *d_image;
    
