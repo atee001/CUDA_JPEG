@@ -50,6 +50,8 @@ int main (int argc, char *argv[])
     cudaDeviceSynchronize();    
 
     cudaMemcpy(d_image, image.ptr<float>(), imageSize, cudaMemcpyHostToDevice);
+
+    printf("Testing");
     
     cudaDeviceSynchronize();   
 
