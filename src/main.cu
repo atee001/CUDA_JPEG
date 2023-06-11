@@ -28,12 +28,12 @@ int main (int argc, char *argv[])
 
     // float *A_h, *B_h, *C_h;
     // float *A_d, *B_d, *C_d;
-    size_t mat_sz;
+    // size_t mat_sz;
     // unsigned matDim;
     // dim3 dim_grid, dim_block;
 
     if (argc == 1) {
-        mat_sz = image.rows*image.cols;
+        size_t imageSize = image.rows*image.cols*sizeof(float);
     } 
     else {
         printf("\n    Invalid input parameters!"
@@ -43,7 +43,7 @@ int main (int argc, char *argv[])
     }
     
     float *d_image;
-    size_t imageSize = image.rows*image.cols*sizeof(float);
+   
     cudaMalloc((void**)&d_image, imageSize);
 
     cudaDeviceSynchronize();    

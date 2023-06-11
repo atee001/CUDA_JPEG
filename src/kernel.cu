@@ -65,7 +65,7 @@ void LaunchDCT(const int row, const int col, const float *d_image)
 
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
     dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
-    DCT<<<blocksPerGrid, BLOCK_SIZE, sizeof(float)*BLOCK_SIZE*BLOCK_SIZE*2>>>(row, col, d_image, result);
+    DCT<<<blocksPerGrid, BLOCK_SIZE, sizeof(float)*BLOCK_SIZE*BLOCK_SIZE*2>>>(row, col, d_image);
 
 }
 
