@@ -10,7 +10,8 @@ int main (int argc, char *argv[])
     cudaError_t cuda_ret;
     // Initialize host variables ----------------------------------------------
     cv::Mat image = cv::imread("lena_std.tif");    
-    cv::imshow("Image", image);
+    cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
+    cv::imshow("Image Window", image);
     cv::waitKey(0);
 
     printf("\nSetting up the problem..."); fflush(stdout);
@@ -128,7 +129,7 @@ int main (int argc, char *argv[])
     cudaFree(A_d);
     cudaFree(B_d);
     cudaFree(C_d);
-    
+    cv::destroyWindow("Image Window");
     /*************************************************************************/
     return 0;
 }
