@@ -42,13 +42,13 @@ int main (int argc, char *argv[])
         exit(0);
     }
     
-    float *d_image, result;
+    float *d_image, *result;
     size_t imageSize = image.rows*image.cols*sizeof(float);
     cudaMalloc((void**)&d_image, imageSize);
 
     cudaDeviceSynchronize();    
 
-    cudaMemcpy(d_image, image, imageSize, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_image, image.ptr<float>(), imageSize, cudaMemcpyHostToDevice);
     
     cudaDeviceSynchronize();   
 
