@@ -30,7 +30,7 @@ __constant__ float IDctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.0975, -0.2778, 0.4157, -0.4904, 0.4904, -0.4157, 0.2778, -0.0975
 };
 
-__global__ void matAdd(int dim, const float *A, const float *B, float* C) {
+__global__ void DCT(int row, int col, const float *d_image, float* result) {
 
     extern __shared__ float cache_one[];
     extern __shared__ float cache_two[];   
@@ -59,13 +59,13 @@ __global__ void matAdd(int dim, const float *A, const float *B, float* C) {
 
 }
 
-void basicMatAdd(int dim, const float *A, const float *B, float *C)
+void LaunchDCT(const int row, const int col, const float *d_image, float* result)
 {
     // Initialize thread block and kernel grid dimensions ---------------------
 
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
-    dim3 blocksPerGrid(ceil(dim/(float)threadsPerBlock.x), ceil(dim/(float)threadsPerBlock.y), 1);
-    matAdd<<<blocksPerGrid, BLOCK_SIZE, sizeof(float)*BLOCK_SIZE*BLOCK_SIZE*2>>>(dim, A, B, C);
+    dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
+    matAdd<<<blocksPerGrid, BLOCK_SIZE, sizeof(float)*BLOCK_SIZE*BLOCK_SIZE*2>>>(row, col, d_image, result);
 
 }
 
