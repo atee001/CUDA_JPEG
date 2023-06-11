@@ -6,8 +6,8 @@
 
 __global__ void matAdd(int dim, const float *A, const float *B, float* C) {
 
-    __shared__ extern cache_one[][];
-    __shared__ extern cache_two[][];
+    __shared__ extern float cache_one[][];
+    __shared__ extern float cache_two[][];
 
     
 
