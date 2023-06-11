@@ -42,7 +42,7 @@ int main (int argc, char *argv[])
         exit(0);
     }
     
-    float *d_image, *result;
+    float *d_image;
     size_t imageSize = image.rows*image.cols*sizeof(float);
     cudaMalloc((void**)&d_image, imageSize);
 
@@ -52,7 +52,7 @@ int main (int argc, char *argv[])
     
     cudaDeviceSynchronize();   
 
-    LaunchDCT(image.rows, image.cols, d_image, result);
+    LaunchDCT(image.rows, image.cols, d_image);
     cuda_ret = cudaDeviceSynchronize();
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
 

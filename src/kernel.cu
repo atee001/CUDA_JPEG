@@ -30,7 +30,7 @@ __constant__ float IDctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.0975, -0.2778, 0.4157, -0.4904, 0.4904, -0.4157, 0.2778, -0.0975
 };
 
-__global__ void DCT(int row, int col, const float *d_image, float* result) {
+__global__ void DCT(int row, int col, const float *d_image) {
 
     extern __shared__ float cache_one[];
     extern __shared__ float cache_two[];   
@@ -59,7 +59,7 @@ __global__ void DCT(int row, int col, const float *d_image, float* result) {
 
 }
 
-void LaunchDCT(const int row, const int col, const float *d_image, float* result)
+void LaunchDCT(const int row, const int col, const float *d_image)
 {
     // Initialize thread block and kernel grid dimensions ---------------------
 
