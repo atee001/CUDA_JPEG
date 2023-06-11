@@ -49,7 +49,7 @@ int main (int argc, char *argv[])
 
     cudaDeviceSynchronize();    
 
-    cudaMemcpy(d_image, image.ptr<uchar>(), imageSize, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_image, image.ptr<float>(), imageSize, cudaMemcpyHostToDevice);
     
     cudaDeviceSynchronize();   
 
