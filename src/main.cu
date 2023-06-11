@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
     // size_t mat_sz;
     // unsigned matDim;
     // dim3 dim_grid, dim_block;
-    size_t imageSize;
+    size_t imageSize = image.rows*image.cols*sizeof(float);
 
     if (argc == 1) {
         imageSize = image.rows*image.cols*sizeof(float);
@@ -49,7 +49,7 @@ int main (int argc, char *argv[])
 
     cudaDeviceSynchronize();    
 
-    cudaMemcpy(d_image, image.ptr<float>(), imageSize, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_image, image.ptr<uchar>(), imageSize, cudaMemcpyHostToDevice);
     
     cudaDeviceSynchronize();   
 
@@ -62,7 +62,7 @@ int main (int argc, char *argv[])
 
     cudaDeviceSynchronize();   
 
-    uint8_t* outputImage = (uint8_t*)malloc(imageSize);
+    uint8_t* outputImage = (uint8_t*)malloc(image.rows*image.cols*sizeof(uint8_t));
 
     for(unsigned int i = 0; i < image.rows*image.cols; i++){
         outputImage[i] = static_cast<uint8_t>(h_outputImage[i]);
