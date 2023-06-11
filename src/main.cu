@@ -31,9 +31,10 @@ int main (int argc, char *argv[])
     // size_t mat_sz;
     // unsigned matDim;
     // dim3 dim_grid, dim_block;
+    size_t imageSize;
 
     if (argc == 1) {
-        size_t imageSize = image.rows*image.cols*sizeof(float);
+        imageSize = image.rows*image.cols*sizeof(float);
     } 
     else {
         printf("\n    Invalid input parameters!"
