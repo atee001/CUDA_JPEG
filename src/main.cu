@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
     dim3 dim_grid, dim_block;
 
     if (argc == 1) {
-        matDim = 1000;
+        matDim = image.rows*image.cols;
     } else if (argc == 2) {
         matDim = atoi(argv[1]);
     } else {

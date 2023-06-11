@@ -33,9 +33,7 @@ __constant__ float IDctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
 __global__ void matAdd(int dim, const float *A, const float *B, float* C) {
 
     extern __shared__ float cache_one[];
-    extern __shared__ float cache_two[];
-
-    
+    extern __shared__ float cache_two[];   
 
 
     /********************************************************************
