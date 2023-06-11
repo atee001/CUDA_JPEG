@@ -1,5 +1,7 @@
 NVCC        = nvcc
 OPENCV_INC = -I/usr/include/opencv
+OPENCV_LIBS = -I/user/include/opencv/lib
+
 ifeq (,$(shell which nvprof))
 NVCC_FLAGS  = -O3 
 else
