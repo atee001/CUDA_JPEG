@@ -12,7 +12,7 @@ int main (int argc, char *argv[])
     // Timer timer;
     cudaError_t cuda_ret;
     // Initialize host variables ----------------------------------------------
-    cv::Mat image = cv::imread("../images/lena_std.tif");    
+    cv::Mat image = cv::imread("/home/eemaj/atee/ee147/jpeg/CUDA_JPEG/images/lena_std.tif");    
     cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
     cv::imshow("Image Window", image);
     cv::waitKey(0);
