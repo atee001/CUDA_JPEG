@@ -60,6 +60,8 @@ int main (int argc, char *argv[])
     float* h_outputImage = (float*)malloc(imageSize);
     cudaMemcpy(h_outputImage, d_image, imageSize, cudaMemcpyDeviceToHost);
 
+    cudaDeviceSynchronize();   
+
     uint8_t* outputImage = (uint8_t*)malloc(imageSize);
 
     for(unsigned int i = 0; i < image.rows*image.cols; i++){
