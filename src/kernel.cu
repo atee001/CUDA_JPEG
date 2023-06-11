@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <opencv2/opencv.hpp>
+#define BLOCK_SIZE 8
 
 using namespace cv;
 using namespace std;
 
-#define BLOCK_SIZE 8
-
+//forward transform
 __constant__ float dctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536,
     0.4904, 0.4157, 0.2778, 0.0975, -0.0975, -0.2778, -0.4157, -0.4904,
@@ -18,7 +18,8 @@ __constant__ float dctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.0975, -0.2778, 0.4157, -0.4904, 0.4904, -0.4157, 0.2778, -0.0975
 };
 
-__constant__ float inverseDctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
+//inverse transform
+__constant__ float IDctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.3536, 0.4904, 0.4619, 0.4157, 0.3536, 0.2778, 0.1913, 0.0975,
     0.3536, 0.4157, 0.1913, -0.0975, -0.3536, -0.4904, -0.4619, -0.2778,
     0.3536, 0.2778, -0.1913, -0.4904, -0.3536, 0.0975, 0.4619, 0.4157,

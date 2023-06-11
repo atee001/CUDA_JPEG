@@ -9,6 +9,14 @@ int main (int argc, char *argv[])
     cudaError_t cuda_ret;
     // Initialize host variables ----------------------------------------------
     cv::Mat image = cv::imread("/home/eemaj/atee/ee147/jpeg/CUDA_JPEG/images/lena_std.tif");    
+    if (image.empty())
+    {
+        printf("Failed to read image exitting...")
+        return 1;
+    }
+
+    cv::resize(image, image, cv::Size(512, 512));
+    cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);    
     cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
     cv::imshow("Image Window", image);
     cv::waitKey(0);
