@@ -42,14 +42,15 @@ int main (int argc, char *argv[])
       "\n");
         exit(0);
     }
-    
+    Mat image_float; 
+    image.convertTo(image_float, CV_32F);
     float *d_image;
    
     cudaMalloc((void**)&d_image, imageSize);
 
     cudaDeviceSynchronize();    
 
-    cudaMemcpy(d_image, image.ptr<float>(), imageSize, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_image, image_float.ptr<float>(), imageSize, cudaMemcpyHostToDevice);
 
     printf("Testing");
     
