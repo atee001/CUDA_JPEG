@@ -47,6 +47,7 @@ int main (int argc, char *argv[])
     float *d_image, *result;
    
     cudaMalloc((void**)&d_image, imageSize);
+    cudaMalloc((void**)&result, imageSize);
 
     cudaDeviceSynchronize();    
 
@@ -61,7 +62,7 @@ int main (int argc, char *argv[])
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
 
     float* h_outputImage = (float*)malloc(imageSize);
-    cudaMemcpy(h_outputImage, d_image, imageSize, cudaMemcpyDeviceToHost);
+    cudaMemcpy(h_outputImage, result, imageSize, cudaMemcpyDeviceToHost);
 
     cudaDeviceSynchronize();   
 
