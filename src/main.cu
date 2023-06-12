@@ -80,8 +80,8 @@ int main (int argc, char *argv[])
     
     
 
-    cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
-    cv::imshow("Image Window", image);
+    // cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
+    // cv::imshow("Image Window", image);
     cv::namedWindow("Resultant Image", cv::WINDOW_NORMAL);
     cv::imshow("Resultant Image", resultImage);   
     cv::waitKey(0);
@@ -94,7 +94,7 @@ int main (int argc, char *argv[])
     cudaFree(IDCT_res);
 
 
-    cv::destroyWindow("Image Window");
+    // cv::destroyWindow("Image Window");
     cv::destroyWindow("Resultant Image");
     /*************************************************************************/
     return 0;
