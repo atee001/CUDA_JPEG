@@ -44,12 +44,29 @@ __global__ void DCT(int numRows, int numCols, const float *d_image, float *resul
         __syncthreads();
         float sum = 0.0f;
         for(int k = 0; k < BLOCK_SIZE; k++){
-            sum += dctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k * BLOCK_SIZE + threadIdx.x];
+            sum += dctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[threadIdx.y*BLOCK_SIZE + k];
         }
 
         __syncthreads();
-        result[y*numCols + x] = sum;
-    }       
+
+        //intermediate result for 1D DCT need to now multiply by Transposed matrix
+        cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = sum;
+
+        __syncthreads();
+
+        sum = 0.0f;
+
+        for(int k = 0; k < BLOCK_SIZE; k++){
+            sum += idctMatrix[threadIdx.y * BLOCK_SIZE + k] * cache[threadIdx.y*BLOCK_SIZE + k]
+        }
+
+        __syncthreads();
+        
+        result[y * numCols + x] = sum;
+
+    }  
+
+
 }
     
 
