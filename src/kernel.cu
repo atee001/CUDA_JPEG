@@ -8,7 +8,7 @@ using namespace std;
 
 //DCT matrix T obtained from matlab dctmtx(8)
 __constant__ float dctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
-    0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536,
+ 0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536,
     0.4904, 0.4157, 0.2778, 0.0975, -0.0975, -0.2778, -0.4157, -0.4904,
     0.4619, 0.1913, -0.1913, -0.4619, -0.4619, -0.1913, 0.1913, 0.4619,
     0.4157, -0.0975, -0.4904, -0.2778, 0.2778, 0.4904, 0.0975, -0.4157,
@@ -24,10 +24,10 @@ __constant__ float IdctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.3536, 0.4157, 0.1913, -0.0975, -0.3536, -0.4904, -0.4619, -0.2778,
     0.3536, 0.2778, -0.1913, -0.4904, -0.3536, 0.0975, 0.4619, 0.4157,
     0.3536, 0.0975, -0.4619, -0.2778, 0.3536, 0.4157, -0.1913, -0.4904,
-    0.3536, -0.3536, -0.3536, 0.3536, 0.3536, -0.3536, -0.3536, 0.3536,
-    0.2778, -0.4904, 0.0975, 0.4157, -0.4157, -0.0975, 0.4904, -0.2778,
-    0.1913, -0.4619, 0.4619, -0.1913, -0.1913, 0.4619, -0.4619, 0.1913,
-    0.0975, -0.2778, 0.4157, -0.4904, 0.4904, -0.4157, 0.2778, -0.0975
+    0.3536, -0.0975, -0.4619, 0.2778, 0.3536, -0.4157, -0.1913, 0.4904,
+    0.3536, -0.2778, -0.1913, 0.4904, -0.3536, -0.0975, 0.4619, -0.4157,
+    0.3536, -0.4157, 0.1913, 0.0975, -0.3536, 0.4904, -0.4619, 0.2778,
+    0.3536, -0.4904, 0.4619, -0.4157, 0.3536, -0.2778, 0.1913, -0.0975
 };
 
 //F(p,q) = T * f(x,y) * T'
@@ -40,12 +40,13 @@ __global__ void DCT(int numRows, int numCols, const float *d_image, float *DCT_r
 
     if(y < numRows && x < numCols){
         cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = d_image[y*numCols + x];
-
         __syncthreads();
+
         float sum = 0.0f;
         for(int k = 0; k < BLOCK_SIZE; k++){
             sum += dctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
         }
+        
         __syncthreads();
         DCT_res[y * numCols + x] = sum;
     }    
@@ -60,12 +61,13 @@ __global__ void IDCT(int numRows, int numCols, const float *DCT_res, float *IDCT
 
     if(y < numRows && x < numCols){
         cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = DCT_res[y*numCols + x];
-
         __syncthreads();
+
         float sum = 0.0f;
         for(int k = 0; k < BLOCK_SIZE; k++){
             sum += IdctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
         }
+
         __syncthreads();
         IDCT_res[y * numCols + x] = sum;
     }
