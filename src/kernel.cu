@@ -70,7 +70,7 @@ __global__ void IDCT(int numRows, int numCols, float *DCT_res, float *IDCT_res) 
         for(int k = 0; k < BLOCK_SIZE; k++){
             sum += IdctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
         }
-        
+
         __syncthreads();
         IDCT_res[y * numCols + x] = sum;
     }
@@ -129,7 +129,7 @@ void LaunchDCT(const int row, const int col, float *d_image, float *DCT_res)
 
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
     dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
-    DCT<<<blocksPerGrid, BLOCK_SIZE>>>(row, col, d_image, DCT_res);
+    DCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, d_image, DCT_res);
 
 }
 
@@ -139,7 +139,7 @@ void LaunchIDCT(const int row, const int col, float *DCT_res, float *IDCT_res)
 
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
     dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
-    IDCT<<<blocksPerGrid, BLOCK_SIZE>>>(row, col, DCT_res, IDCT_res);
+    IDCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, DCT_res, IDCT_res);
 
 }
 
