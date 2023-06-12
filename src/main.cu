@@ -17,7 +17,7 @@ int main (int argc, char *argv[])
 
     //preprocess convert image to 512 x 512 and single channel
 
-    // cv::resize(image, image, cv::Size(512, 512));
+    cv::resize(image, image, cv::Size(512, 512));
     cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);    
 
     printf("\nSetting up the problem..."); fflush(stdout);
@@ -70,14 +70,15 @@ int main (int argc, char *argv[])
         h_outputImage[i] *= 255.0;
     }
 
-// Convert the matrix to CV_8U data type
+    // Convert the matrix to CV_8U data type
     cv::Mat resultImage(image.rows, image.cols, CV_8U);
     for (int i = 0; i < resultImage.rows; i++) {
         for (int j = 0; j < resultImage.cols; j++) {
             resultImage.at<uint8_t>(i, j) = static_cast<uint8_t>(h_outputImage[i * resultImage.cols + j]);
         }
     }
-
+    
+    
 
     cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
     cv::imshow("Image Window", image);

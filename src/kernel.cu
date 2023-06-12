@@ -32,7 +32,7 @@ __constant__ float IdctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
 
 //F(p,q) = T * f(x,y) * T'
 
-__global__ void DCT(int numRows, int numCols, const float *d_image, float *DCT_res) {
+__global__ void DCT(int numRows, int numCols, float *d_image, float *DCT_res) {
 
     __shared__ float cache[BLOCK_SIZE*BLOCK_SIZE];  
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
@@ -53,7 +53,7 @@ __global__ void DCT(int numRows, int numCols, const float *d_image, float *DCT_r
 
 }
 
-__global__ void IDCT(int numRows, int numCols, const float *DCT_res, float *IDCT_res) {
+__global__ void IDCT(int numRows, int numCols, float *DCT_res, float *IDCT_res) {
 
     __shared__ float cache[BLOCK_SIZE*BLOCK_SIZE];  
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
@@ -120,7 +120,7 @@ __global__ void IDCT(int numRows, int numCols, const float *DCT_res, float *IDCT
 
 
 
-void LaunchDCT(const int row, const int col, const float *d_image, float *DCT_res)
+void LaunchDCT(const int row, const int col, float *d_image, float *DCT_res)
 {
     // Initialize thread block and kernel grid dimensions ---------------------
 
