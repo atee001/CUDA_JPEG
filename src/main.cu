@@ -69,7 +69,7 @@ int main (int argc, char *argv[])
     uint8_t* outputImage = (uint8_t*)malloc(image.rows*image.cols*sizeof(uint8_t));
 
     for(unsigned int i = 0; i < image.rows*image.cols; i++){
-        outputImage[i] = static_cast<uint8_t>(h_outputImage[i]);
+        outputImage[i] = static_cast<uint8_t>(255*h_outputImage[i]);
     }
 
     cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
