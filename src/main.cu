@@ -40,7 +40,7 @@ int main (int argc, char *argv[])
         exit(0);
     }
     cv::Mat image_float; 
-    image.convertTo(image_float, CV_32F);
+    image.convertTo(image_float, CV_32F, 1.0/255);
     float *d_image, *DCT_res, *IDCT_res;
    
     cudaMalloc((void**)&d_image, imageSize);
@@ -61,28 +61,33 @@ int main (int argc, char *argv[])
     cuda_ret = cudaDeviceSynchronize();
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
 
-    float* h_outputImage = (float*)malloc(imageSize*sizeof(float));
+    float* h_outputImage = (float*)malloc(imageSize);
     cudaMemcpy(h_outputImage, IDCT_res, imageSize, cudaMemcpyDeviceToHost);
 
     cudaDeviceSynchronize();   
 
-    uint8_t* outputImage = (uint8_t*)malloc(image.rows*image.cols*sizeof(uint8_t));
-
-    for(unsigned int i = 0; i < image.rows*image.cols; i++){
-        outputImage[i] = static_cast<uint8_t>(h_outputImage[i]);
+    for (unsigned int i = 0; i < image.rows * image.cols; i++) {
+        h_outputImage[i] *= 255.0;
     }
+
+// Convert the matrix to CV_8U data type
+    cv::Mat resultImage(image.rows, image.cols, CV_8U);
+    for (int i = 0; i < resultImage.rows; i++) {
+        for (int j = 0; j < resultImage.cols; j++) {
+            resultImage.at<uint8_t>(i, j) = static_cast<uint8_t>(h_outputImage[i * resultImage.cols + j]);
+        }
+    }
+
 
     cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
     cv::imshow("Image Window", image);
-
-    cv::Mat resultImage(image.rows, image.cols, CV_8UC1, outputImage);
     cv::imshow("Resultant Image", resultImage);
     cv::namedWindow("Resultant Image", cv::WINDOW_NORMAL);
     cv::waitKey(0);
     
 
     free(h_outputImage);
-    free(outputImage);
+    // free(outputImage);
     cudaFree(d_image);
     cudaFree(DCT_res);
     cudaFree(IDCT_res);
