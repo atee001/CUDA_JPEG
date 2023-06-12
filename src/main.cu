@@ -76,8 +76,8 @@ int main (int argc, char *argv[])
     cv::imshow("Image Window", image);
 
     cv::Mat resultImage(image.rows, image.cols, CV_8UC1, outputImage);
-    cv::namedWindow("Resultant Image", cv::WINDOW_NORMAL);
     cv::imshow("Resultant Image", resultImage);
+    cv::namedWindow("Resultant Image", cv::WINDOW_NORMAL);
     cv::waitKey(0);
     
 
