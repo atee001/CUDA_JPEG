@@ -46,8 +46,8 @@ int main (int argc, char *argv[])
     cudaMalloc((void**)&d_image, imageSize);
     cudaMalloc((void**)&DCT_res, imageSize);
     cudaMalloc((void**)&IDCT_res, imageSize);
-    cudaMalloc((void**)&temp, imageSize);
-    cudaMalloc((void**)&result, imageSize);
+    // cudaMalloc((void**)&temp, imageSize);
+    // cudaMalloc((void**)&result, imageSize);
 
     cudaDeviceSynchronize();    
 
@@ -102,6 +102,7 @@ int main (int argc, char *argv[])
 
     // cv::destroyWindow("Image Window");
     cv::destroyWindow("Resultant Image");
+    cv::destroyWindow("Image Window");
     /*************************************************************************/
     return 0;
 }
