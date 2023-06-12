@@ -6,7 +6,7 @@
 using namespace cv;
 using namespace std;
 
-//forward transform
+//DCT matrix T obtained from matlab dctmtx(8)
 __constant__ float dctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536, 0.3536,
     0.4904, 0.4157, 0.2778, 0.0975, -0.0975, -0.2778, -0.4157, -0.4904,
@@ -18,8 +18,8 @@ __constant__ float dctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.0975, -0.2778, 0.4157, -0.4904, 0.4904, -0.4157, 0.2778, -0.0975
 };
 
-//inverse transform
-__constant__ float IDctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
+//transposed DCT matrix T' obtained from matlab dctmtx(8) with a transpose
+__constant__ float IdctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.3536, 0.4904, 0.4619, 0.4157, 0.3536, 0.2778, 0.1913, 0.0975,
     0.3536, 0.4157, 0.1913, -0.0975, -0.3536, -0.4904, -0.4619, -0.2778,
     0.3536, 0.2778, -0.1913, -0.4904, -0.3536, 0.0975, 0.4619, 0.4157,
@@ -30,10 +30,27 @@ __constant__ float IDctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
     0.0975, -0.2778, 0.4157, -0.4904, 0.4904, -0.4157, 0.2778, -0.0975
 };
 
-__global__ void DCT(int row, int col, const float *d_image) {
+//F(p,q) = T * f(x,y) * T'
 
-    extern __shared__ float cache_one[];
-    extern __shared__ float cache_two[];   
+__global__ void DCT(int numRows, int numCols, const float *d_image, float *result) {
+
+    __shared__ float cache[BLOCK_SIZE];  
+    int y = threadIdx.y + (blockDim.y)(blockIdx.y);
+    int x = threadIdx.x + (blockDim.x)(blockIdx.x);    
+
+    if(y < numRows && x < numCols){
+        cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = d_image[y*numCols + x];
+
+        __syncthreads();
+        float sum = 0.0f;
+        for(int k = 0; k < BLOCK_SIZE; k++){
+            sum += dctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k * BLOCK_SIZE + threadIdx.x];
+        }
+        __syncthreads();
+        d_image[y*numCols + x] = sum;
+    }       
+}
+    
 
 
     /********************************************************************
@@ -59,13 +76,13 @@ __global__ void DCT(int row, int col, const float *d_image) {
 
 }
 
-void LaunchDCT(const int row, const int col, const float *d_image)
+void LaunchDCT(const int row, const int col, const float *d_image, float *result)
 {
     // Initialize thread block and kernel grid dimensions ---------------------
 
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
     dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
-    DCT<<<blocksPerGrid, BLOCK_SIZE, sizeof(float)*BLOCK_SIZE*BLOCK_SIZE*2>>>(row, col, d_image);
+    DCT<<<blocksPerGrid, BLOCK_SIZE>>>(row, col, d_image);
 
 }
 

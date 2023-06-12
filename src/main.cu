@@ -44,7 +44,7 @@ int main (int argc, char *argv[])
     }
     cv::Mat image_float; 
     image.convertTo(image_float, CV_32F);
-    float *d_image;
+    float *d_image, *result;
    
     cudaMalloc((void**)&d_image, imageSize);
 
@@ -56,7 +56,7 @@ int main (int argc, char *argv[])
     
     cudaDeviceSynchronize();   
 
-    LaunchDCT(image.rows, image.cols, d_image);
+    LaunchDCT(image.rows, image.cols, d_image, result);
     cuda_ret = cudaDeviceSynchronize();
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
 
@@ -79,8 +79,6 @@ int main (int argc, char *argv[])
 
     free(h_outputImage);
     free(outputImage);
-
-
     cudaFree(d_image);
 
 
