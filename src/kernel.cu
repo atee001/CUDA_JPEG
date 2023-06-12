@@ -75,7 +75,7 @@ __global__ void DCT(int numRows, int numCols, const float *d_image, float *resul
 
 
 
-}
+
 
 void LaunchDCT(const int row, const int col, const float *d_image, float *result)
 {
