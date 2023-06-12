@@ -41,7 +41,7 @@ int main (int argc, char *argv[])
     }
     cv::Mat image_float; 
     image.convertTo(image_float, CV_32F, 1.0/255);
-    float *d_image, *DCT_res, *IDCT_res, temp, result;
+    float *d_image, *DCT_res, *IDCT_res, *temp, *result;
    
     cudaMalloc((void**)&d_image, imageSize);
     cudaMalloc((void**)&DCT_res, imageSize);
