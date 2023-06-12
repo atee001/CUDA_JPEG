@@ -60,9 +60,9 @@ int main (int argc, char *argv[])
     cudaDeviceSynchronize();
     LaunchIDCT(image.rows, image.cols, DCT_res, IDCT_res);
     cudaDeviceSynchronize();
-    LaunchDCT(image.rows, image.cols, IDCT_res, temp);
+    LaunchIDCT(image.rows, image.cols, IDCT_res, temp);
     cudaDeviceSynchronize();
-    LaunchIDCT(image.rows, image.cols, temp, result);
+    LaunchDCT(image.rows, image.cols, temp, result);
 
     cuda_ret = cudaDeviceSynchronize();
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
