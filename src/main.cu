@@ -17,7 +17,7 @@ int main (int argc, char *argv[])
 
     //preprocess convert image to 512 x 512 and single channel
 
-    cv::resize(image, image, cv::Size(512, 512));
+    cv::resize(image, image);
     cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);    
 
     printf("\nSetting up the problem..."); fflush(stdout);
