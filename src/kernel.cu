@@ -67,8 +67,8 @@ __global__ void IDCT(int numRows, int numCols, float *DCT_res, float *IDCT_res) 
         cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = DCT_res[y*numCols + x];
         __syncthreads();
        
-        for(int k = 0; k < BLOCK_SIZE; k++){
-            sum += IdctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
+        for(int k = 0; k < BLOCK_SIZE; k++){ 
+            sum += IdctMatrix[k*BLOCK_SIZE + threadIdx.x] * cache[threadIdx.y*BLOCK_SIZE + k];
         }
 
         __syncthreads();
