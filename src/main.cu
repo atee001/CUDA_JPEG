@@ -41,11 +41,13 @@ int main (int argc, char *argv[])
     }
     cv::Mat image_float; 
     image.convertTo(image_float, CV_32F, 1.0/255);
-    float *d_image, *DCT_res, *IDCT_res;
+    float *d_image, *DCT_res, *IDCT_res, temp, result;
    
     cudaMalloc((void**)&d_image, imageSize);
     cudaMalloc((void**)&DCT_res, imageSize);
     cudaMalloc((void**)&IDCT_res, imageSize);
+    cudaMalloc((void**)&temp, imageSize);
+    cudaMalloc((void**)&result, imageSize);
 
     cudaDeviceSynchronize();    
 
@@ -57,12 +59,16 @@ int main (int argc, char *argv[])
     LaunchDCT(image.rows, image.cols, d_image, DCT_res);
     cudaDeviceSynchronize();
     LaunchIDCT(image.rows, image.cols, DCT_res, IDCT_res);
+    cudaDeviceSynchronize();
+    LaunchDCT(image.rows, image.cols, IDCT_res, temp);
+    cudaDeviceSynchronize();
+    LaunchIDCT(image.rows, image.cols, temp, result);
 
     cuda_ret = cudaDeviceSynchronize();
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
 
     float* h_outputImage = (float*)malloc(imageSize);
-    cudaMemcpy(h_outputImage, IDCT_res, imageSize, cudaMemcpyDeviceToHost);
+    cudaMemcpy(h_outputImage, result, imageSize, cudaMemcpyDeviceToHost);
 
     cudaDeviceSynchronize();   
 
@@ -80,8 +86,8 @@ int main (int argc, char *argv[])
     
     
 
-    // cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
-    // cv::imshow("Image Window", image);
+    cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
+    cv::imshow("Image Window", image);
     cv::namedWindow("Resultant Image", cv::WINDOW_NORMAL);
     cv::imshow("Resultant Image", resultImage);   
     cv::waitKey(0);
