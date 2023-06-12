@@ -35,8 +35,8 @@ __constant__ float IdctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
 __global__ void DCT(int numRows, int numCols, const float *d_image, float *result) {
 
     __shared__ float cache[BLOCK_SIZE*BLOCK_SIZE];  
-    int y = threadIdx.y + (blockDim.y)(blockIdx.y);
-    int x = threadIdx.x + (blockDim.x)(blockIdx.x);    
+    int y = threadIdx.y + (blockDim.y*blockIdx.y);
+    int x = threadIdx.x + (blockDim.x*blockIdx.x);    
 
     if(y < numRows && x < numCols){
         cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = d_image[y*numCols + x];
