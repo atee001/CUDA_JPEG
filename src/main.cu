@@ -82,8 +82,8 @@ int main (int argc, char *argv[])
 
     cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
     cv::imshow("Image Window", image);
-    cv::imshow("Resultant Image", resultImage);
     cv::namedWindow("Resultant Image", cv::WINDOW_NORMAL);
+    cv::imshow("Resultant Image", resultImage);   
     cv::waitKey(0);
     
 
