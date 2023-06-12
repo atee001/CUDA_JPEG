@@ -84,7 +84,8 @@ int main (int argc, char *argv[])
     free(h_outputImage);
     free(outputImage);
     cudaFree(d_image);
-    cudaFree(result);
+    cudaFree(DCT_res);
+    cudaFree(IDCT_res);
 
 
     // A_h = (float*) malloc( sizeof(float)*mat_sz ); //returns a char pointer or void pointer for malloc
