@@ -40,7 +40,7 @@ int main (int argc, char *argv[])
         exit(0);
     }
     cv::Mat image_float; 
-    image.convertTo(image_float, CV_32F, 1.0/255);
+    image.convertTo(image_float, CV_32F);
     float *d_image, *DCT_res, *IDCT_res;
    
     cudaMalloc((void**)&d_image, imageSize);
@@ -61,7 +61,7 @@ int main (int argc, char *argv[])
     cuda_ret = cudaDeviceSynchronize();
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
 
-    float* h_outputImage = (float*)malloc(imageSize);
+    float* h_outputImage = (float*)malloc(imageSize*sizeof(float));
     cudaMemcpy(h_outputImage, IDCT_res, imageSize, cudaMemcpyDeviceToHost);
 
     cudaDeviceSynchronize();   
@@ -69,7 +69,7 @@ int main (int argc, char *argv[])
     uint8_t* outputImage = (uint8_t*)malloc(image.rows*image.cols*sizeof(uint8_t));
 
     for(unsigned int i = 0; i < image.rows*image.cols; i++){
-        outputImage[i] = static_cast<uint8_t>(255*h_outputImage[i]);
+        outputImage[i] = static_cast<uint8_t>(h_outputImage[i]);
     }
 
     cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
