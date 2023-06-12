@@ -46,8 +46,9 @@ __global__ void DCT(int numRows, int numCols, const float *d_image, float *resul
         for(int k = 0; k < BLOCK_SIZE; k++){
             sum += dctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k * BLOCK_SIZE + threadIdx.x];
         }
+
         __syncthreads();
-        d_image[y*numCols + x] = sum;
+        result[y*numCols + x] = sum;
     }       
 }
     
