@@ -19,9 +19,6 @@ int main (int argc, char *argv[])
 
     cv::resize(image, image, cv::Size(512, 512));
     cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);    
-    cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
-    cv::imshow("Image Window", image);
-    cv::waitKey(0);
 
     printf("\nSetting up the problem..."); fflush(stdout);
     // startTime(&timer);
@@ -71,6 +68,9 @@ int main (int argc, char *argv[])
     for(unsigned int i = 0; i < image.rows*image.cols; i++){
         outputImage[i] = static_cast<uint8_t>(h_outputImage[i]);
     }
+
+    cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
+    cv::imshow("Image Window", image);
 
     cv::Mat resultImage(image.rows, image.cols, CV_8UC1, outputImage);
     cv::namedWindow("Resultant Image", cv::WINDOW_NORMAL);
