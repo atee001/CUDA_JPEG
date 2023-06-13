@@ -77,24 +77,36 @@ int main (int argc, char *argv[])
     
 
     // Convert the matrix to CV_8U data type
+
+
     cv::Mat resultImage(image.rows, image.cols, CV_8U);
     for (int i = 0; i < resultImage.rows; i++) {
         for (int j = 0; j < resultImage.cols; j++) {
             resultImage.at<uint8_t>(i, j) = static_cast<uint8_t>(h_outputImage[i * resultImage.cols + j]);
         }
     }
-    
+
+    cv::Mat frequencyImage(image.rows, image.cols, CV_32F);
+    float* f_outputImage = (float*)malloc(imageSize);
+    cudaMemcpy(f_outputImage, f_image, imageSize, cudaMemcpyDeviceToHost);
+    memcpy(frequencyImage.data, f_outputImage, imageSize);
+    cv::log(frequencyImage, frequencyImage);
+    cv::normalize(frequencyImage, frequencyImage, 0, 255, cv::NORM_MINMAX, CV_32F);
+    frequencyImage.convertTo(frequencyImage, CV_8U);
+    cv::namedWindow("Frequency Image", cv::WINDOW_NORMAL);
+    cv::imshow("Frequency Image", frequencyImage);    
     // cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_8U);
     
 
-    cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
-    cv::imshow("Image Window", image);
-    cv::namedWindow("Resultant Image", cv::WINDOW_NORMAL);
-    cv::imshow("Resultant Image", resultImage);   
+    cv::namedWindow("Original Image", cv::WINDOW_NORMAL);
+    cv::imshow("Original Image", image);
+    cv::namedWindow("Decompressed Image", cv::WINDOW_NORMAL);
+    cv::imshow("Decompressed Image", resultImage);   
     cv::waitKey(0);
     
 
     free(h_outputImage);
+    free(f_outputImage);
     // free(outputImage);
     cudaFree(d_image);
     cudaFree(f_image);
@@ -102,8 +114,9 @@ int main (int argc, char *argv[])
 
 
     // cv::destroyWindow("Image Window");
-    cv::destroyWindow("Resultant Image");
-    cv::destroyWindow("Image Window");
+    cv::destroyWindow("Decompressed Image");
+    cv::destroyWindow("Original Image");
+    cv::destroyWindow("Frequency Image");
     /*************************************************************************/
     return 0;
 }
