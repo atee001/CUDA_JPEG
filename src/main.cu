@@ -55,9 +55,9 @@ int main (int argc, char *argv[])
     
     cudaDeviceSynchronize();  
 
-    compress(image.rows, image.cols, d_image, f_image);
+    compress(image.rows, image.cols, d_image, f_image); //returns image in frequency domain
     cudaDeviceSynchronize();
-    decompress(image.rows, image.cols, f_image, r_image);
+    decompress(image.rows, image.cols, f_image, r_image); //returns image in spatial domain
     cudaDeviceSynchronize();
     // LaunchIDCT(image.rows, image.cols, IDCT_res, temp);
     // cudaDeviceSynchronize();
