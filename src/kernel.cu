@@ -119,7 +119,7 @@ void compress(const int numRows, const int numCols, float *d_image, float *f_ima
 
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
     dim3 blocksPerGrid(ceil(numCols/(float)threadsPerBlock.x), ceil(numRows/(float)threadsPerBlock.y), 1);
-    DCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, d_image, f_image);
+    DCT<<<blocksPerGrid, threadsPerBlock>>>(numRows, numCols, d_image, f_image);
 
 }
 
@@ -127,7 +127,7 @@ void decompress(const int numRows, const int numCols, float *f_image, float *r_i
 {
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
     dim3 blocksPerGrid(ceil(numCols/(float)threadsPerBlock.x), ceil(numRows/(float)threadsPerBlock.y), 1);
-    IDCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, f_image, r_image);
+    IDCT<<<blocksPerGrid, threadsPerBlock>>>(numRows, numCols, f_image, r_image);
 
 }
 
