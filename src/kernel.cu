@@ -65,8 +65,8 @@ __global__ void DCT(int numRows, int numCols, float *d_image, float *f_image) {
         //final result (I*T')
         f_image[y * numCols + x] = sum; //corresponding image in frequency domain
 
-        if(threadIdx.y == 0 && threadIdx.x == 0){
-            f_image[y * numCols + x] = 1.0;
+        if(threadIdx.y == 7 && threadIdx.x == 7){
+            f_image[y * numCols + x] = 0.0f;
         }
 
 
@@ -93,13 +93,13 @@ __global__ void IDCT(int numRows, int numCols, float *f_image, float *r_image) {
         }
         
         __syncthreads(); 
-        //intermediate results (T*A) = I
+        //intermediate results (T'*F_image) = temp
         cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = sum;
 
         __syncthreads();
 
         sum = 0.0f;
-
+        //temp * T multiply rows of cache with columns of T
         for(int k = 0; k < BLOCK_SIZE; k++){
             sum += dctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
         }
