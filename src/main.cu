@@ -40,7 +40,7 @@ int main (int argc, char *argv[])
         exit(0);
     }
     cv::Mat image_float; 
-    image.convertTo(image_float, CV_32F, 1.0/255);
+    image.convertTo(image_float, CV_32F);
     float *d_image, *f_image, *r_image;
    
     cudaMalloc((void**)&d_image, imageSize);
@@ -84,7 +84,7 @@ int main (int argc, char *argv[])
         }
     }
     
-    cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_8U);
+    // cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_8U);
     
 
     cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
