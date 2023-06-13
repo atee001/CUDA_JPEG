@@ -32,7 +32,7 @@ __constant__ float IdctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
 
 //F(p,q) = T * f(x,y) * T'
 
-__global__ void DCT(int numRows, int numCols, float *d_image, float *DCT_res) {
+__global__ void DCT(int numRows, int numCols, float *d_image, float *f_image) {
 
     __shared__ float cache[BLOCK_SIZE*BLOCK_SIZE];  
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
@@ -50,7 +50,7 @@ __global__ void DCT(int numRows, int numCols, float *d_image, float *DCT_res) {
         }
         
         __syncthreads(); 
-        //intermediate results
+        //intermediate results (T*A) = I
         cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = sum;
 
         __syncthreads();
@@ -62,15 +62,16 @@ __global__ void DCT(int numRows, int numCols, float *d_image, float *DCT_res) {
         }
 
         __syncthreads();
-
-        DCT_res[y * numCols + x] = sum;
+        //final result (I*T')
+        f_image[y * numCols + x] = sum; //corresponding image in frequency domain
 
 
     }    
 
 }
 
-__global__ void IDCT(int numRows, int numCols, float *DCT_res, float *IDCT_res) {
+//(T'*A)*T
+__global__ void IDCT(int numRows, int numCols, float *f_image, float *r_image) {
 
     __shared__ float cache[BLOCK_SIZE*BLOCK_SIZE];  
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
@@ -79,82 +80,53 @@ __global__ void IDCT(int numRows, int numCols, float *DCT_res, float *IDCT_res) 
     float sum = 0.0f;
 
     if(y < numRows && x < numCols){
-        cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = DCT_res[y*numCols + x];
+        cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = f_image[y*numCols + x];
         __syncthreads();
-       
-        for(int k = 0; k < BLOCK_SIZE; k++){  
-            sum += IdctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
+
+        
+        for(int k = 0; k < BLOCK_SIZE; k++){ 
+            sum += IdctMatrix[k*BLOCK_SIZE + threadIdx.x] * cache[threadIdx.y*BLOCK_SIZE + k];
+        }
+        
+        __syncthreads(); 
+        //intermediate results (T*A) = I
+        cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = sum;
+
+        __syncthreads();
+
+        sum = 0.0f;
+
+        for(int k = 0; k < BLOCK_SIZE; k++){
+            sum += dctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
         }
 
         __syncthreads();
-        IDCT_res[y * numCols + x] = sum;
-    }
+        //final result (I*T')
+        r_image[y * numCols + x] = sum; //restored image in spatial domain
+
+
+    }    
 
 }  
 
-    //     __syncthreads();
-
-    //     //intermediate result for 1D DCT need to now multiply by Transposed matrix
-    //     cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = sum;
-
-    //     __syncthreads();
-
-    //     sum = 0.0f;
-
-    //     for(int k = 0; k < BLOCK_SIZE; k++){
-    //         sum += IdctMatrix[threadIdx.y * BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
-    //     }
-
-    //     __syncthreads();
-
-    //     result[y * numCols + x] = sum;
-
-    // }  
-
-
-    
-
-
-    /********************************************************************
-     *
-     * Compute C = A + B
-     *   where A is a (dim x dim) matrix
-     *   where B is a (dim x dim) matrix
-     *   where C is a (dim x dim) matrix
-     *
-     ********************************************************************/
-
-
-    /*************************************************************************/
-    // INSERT KERNEL CODE HERE
-
-    /*************************************************************************/
-
-
-
-
-
-
-
-
-
-void compress(const int row, const int col, float *d_image, float *DCT_res)
+   
+void compress(const int row, const int col, float *d_image, float *f_image)
 {
     // Initialize thread block and kernel grid dimensions ---------------------
 
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
     dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
-    DCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, d_image, DCT_res);
+    DCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, d_image, f_image);
 
 }
 
-// void LaunchIDCT(const int row, const int col, float *DCT_res, float *IDCT_res)
-// {
-//     // Initialize thread block and kernel grid dimensions ---------------------
+void decompress(const int row, const int col, float *f_image, float *r_image)
+{
+    // Initialize thread block and kernel grid dimensions ---------------------
 
-//     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
-//     dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
-//     IDCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, DCT_res, IDCT_res);
+    dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
+    dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
+    IDCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, f_image, r_image);
 
-// }
+}
 
