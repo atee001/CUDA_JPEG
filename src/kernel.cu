@@ -49,8 +49,23 @@ __global__ void DCT(int numRows, int numCols, float *d_image, float *DCT_res) {
             sum += dctMatrix[k*BLOCK_SIZE + threadIdx.x] * cache[threadIdx.y*BLOCK_SIZE + k];
         }
         
+        __syncthreads(); 
+        //intermediate results
+        cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = sum;
+
         __syncthreads();
+
+        sum = 0.0f;
+
+        for(int k = 0; k < BLOCK_SIZE; k++){
+            sum += IdctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
+        }
+
+        __syncthreads();
+
         DCT_res[y * numCols + x] = sum;
+
+
     }    
 
 }
@@ -123,7 +138,7 @@ __global__ void IDCT(int numRows, int numCols, float *DCT_res, float *IDCT_res) 
 
 
 
-void LaunchDCT(const int row, const int col, float *d_image, float *DCT_res)
+void compress(const int row, const int col, float *d_image, float *DCT_res)
 {
     // Initialize thread block and kernel grid dimensions ---------------------
 
@@ -133,13 +148,13 @@ void LaunchDCT(const int row, const int col, float *d_image, float *DCT_res)
 
 }
 
-void LaunchIDCT(const int row, const int col, float *DCT_res, float *IDCT_res)
-{
-    // Initialize thread block and kernel grid dimensions ---------------------
+// void LaunchIDCT(const int row, const int col, float *DCT_res, float *IDCT_res)
+// {
+//     // Initialize thread block and kernel grid dimensions ---------------------
 
-    dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
-    dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
-    IDCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, DCT_res, IDCT_res);
+//     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
+//     dim3 blocksPerGrid(ceil(row/(float)threadsPerBlock.x), ceil(col/(float)threadsPerBlock.y), 1);
+//     IDCT<<<blocksPerGrid, threadsPerBlock>>>(row, col, DCT_res, IDCT_res);
 
-}
+// }
 

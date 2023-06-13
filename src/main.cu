@@ -57,10 +57,10 @@ int main (int argc, char *argv[])
     
     cudaDeviceSynchronize();  
 
-    LaunchDCT(image.rows, image.cols, d_image, DCT_res);
-    cudaDeviceSynchronize();
-    LaunchIDCT(image.rows, image.cols, DCT_res, IDCT_res);
-    cudaDeviceSynchronize();
+    compress(image.rows, image.cols, d_image, DCT_res);
+    // cudaDeviceSynchronize();
+    // LaunchIDCT(image.rows, image.cols, DCT_res, IDCT_res);
+    // cudaDeviceSynchronize();
     // LaunchIDCT(image.rows, image.cols, IDCT_res, temp);
     // cudaDeviceSynchronize();
     // LaunchDCT(image.rows, image.cols, temp, result);
@@ -69,7 +69,7 @@ int main (int argc, char *argv[])
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
 
     float* h_outputImage = (float*)malloc(imageSize);
-    cudaMemcpy(h_outputImage, IDCT_res, imageSize, cudaMemcpyDeviceToHost);
+    cudaMemcpy(h_outputImage, DCT_res, imageSize, cudaMemcpyDeviceToHost);
 
     cudaDeviceSynchronize();   
 
