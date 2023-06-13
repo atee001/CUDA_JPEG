@@ -71,9 +71,10 @@ int main (int argc, char *argv[])
 
     cudaDeviceSynchronize();   
 
-    for (unsigned int i = 0; i < image.rows * image.cols; i++) {
-        h_outputImage[i] *= 255.0;
-    }
+    // for (unsigned int i = 0; i < image.rows * image.cols; i++) {
+    //     h_outputImage[i] *= 255.0;
+    // }
+    
 
     // Convert the matrix to CV_8U data type
     cv::Mat resultImage(image.rows, image.cols, CV_8U);
@@ -83,6 +84,7 @@ int main (int argc, char *argv[])
         }
     }
     
+    cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_8U);
     
 
     cv::namedWindow("Image Window", cv::WINDOW_NORMAL);
