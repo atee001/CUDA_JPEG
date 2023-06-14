@@ -109,7 +109,7 @@ Kept facing indexing problems had to compare DCT and IDCT matrix multiplication 
 
 Kept using the wrong index for element wise multiplication with Filter. Eventually figured out to use mod 8 since the filter repeats every 8 columns and 8 rows. 
 
-Couldn't see the Image in frequency as the pixel values were too small. Had to expand the dyamic range using Log of abs of image. Otherwise the entire frequency domain image was black. 
+Couldn't see the Image in frequency as the pixel values were too small. Had to expand the dynamic range using Log of abs of image. Otherwise the entire frequency domain image was black. 
 
 Task	Breakdown
 
