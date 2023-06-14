@@ -113,7 +113,7 @@ Couldn't see the Image in frequency as the pixel values were too small. Had to e
 
 Task	Breakdown
 
-Implementation of Discrete Cosine Tranform: Andrew Tee - 100%
+Implementation of Discrete Cosine Transform: Andrew Tee - 100%
 
 Implementation of Quantization using user defined filters: Andrew Tee - 100%
 
