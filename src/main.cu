@@ -12,55 +12,56 @@ double calculateMSE(const cv::Mat& image1, const cv::Mat& image2) {
     return mseValue/(image1.rows*image1.cols);
 }
 
-void createZonalFilter15(double mask[8][8])
+void createZonalFilter15(double mask[64])
 {
-    double maskData[8][8] = {
-        {1, 1, 1, 1, 1, 0, 0, 0},
-        {1, 1, 1, 1, 0, 0, 0, 0},
-        {1, 1, 1, 0, 0, 0, 0, 0},
-        {1, 1, 0, 0, 0, 0, 0, 0},
-        {1, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+    double maskData[64] = {
+        1, 1, 1, 1, 1, 0, 0, 0,
+        1, 1, 1, 1, 0, 0, 0, 0,
+        1, 1, 1, 0, 0, 0, 0, 0,
+        1, 1, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0
     };
     memcpy(mask, maskData, sizeof(maskData));
 }
 
-void createZonalFilter32(double mask[8][8])
+void createZonalFilter32(double mask[64])
 {
-    double maskData[8][8] = {
-        {1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 0, 0},
-        {1, 1, 1, 1, 0, 0, 0, 0},
-        {1, 1, 1, 0, 0, 0, 0, 0},
-        {1, 1, 0, 0, 0, 0, 0, 0},
-        {1, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+    double maskData[64] = {
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 0, 0,
+        1, 1, 1, 1, 0, 0, 0, 0,
+        1, 1, 1, 0, 0, 0, 0, 0,
+        1, 1, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0
     };
     memcpy(mask, maskData, sizeof(maskData));
 }
 
-void createZonalFilterAll(double mask[8][8])
+void createZonalFilterAll(double mask[64])
 {
-    double maskData[8][8] = {
-        {1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1}
+    double maskData[64] = {
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1
     };
     memcpy(mask, maskData, sizeof(maskData));
 }
+
 
 int main (int argc, char *argv[])
 {
     int choice;
-    double zonalFilter[8][8];
+    double zonalFilter[64];
 
     printf("Choose the zonal filter:\n");
     printf("1. Retain 15 coefficients\n");
@@ -86,13 +87,12 @@ int main (int argc, char *argv[])
     }
 
     printf("Selected Zonal Filter:\n");
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            printf("%.0f ", zonalFilter[i][j]);
+    
+    for (int i = 0; i < 8; i++){
+        for (int j = 0; j < 8; j++){
+            printf("%.0f ", zonalFilter[i * 8 + j]);
         }
-        printf("\n");
+        printf("\n");   
     }
 
     // Timer timer;
