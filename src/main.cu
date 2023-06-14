@@ -98,7 +98,7 @@ int main (int argc, char *argv[])
     // Timer timer;
     cudaError_t cuda_ret;
     // Initialize host variables ----------------------------------------------
-    cv::Mat image = cv::imread("/home/eemaj/atee/ee147/jpeg/CUDA_JPEG/images/lena_std.tif");    
+    cv::Mat image = cv::imread("/home/eemaj/atee/ee147/jpeg/CUDA_JPEG/images/roti.jpg");    
     if (image.empty())
     {
         printf("Failed to read image exitting...");
