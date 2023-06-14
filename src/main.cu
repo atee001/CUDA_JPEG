@@ -40,7 +40,7 @@ int main (int argc, char *argv[])
         exit(0);
     }
     cv::Mat image_double; 
-    image.convertTo(image_double, CV_32F);
+    image.convertTo(image_double, CV_64F);
     double *d_image, *f_image, *r_image;
    
     cudaMalloc((void**)&d_image, imageSize);
@@ -86,7 +86,7 @@ int main (int argc, char *argv[])
         }
     }
 
-    cv::Mat frequencyImage(image.rows, image.cols, CV_32F);
+    cv::Mat frequencyImage(image.rows, image.cols, CV_64F);
     double* f_outputImage = (double*)malloc(imageSize);
     cudaMemcpy(f_outputImage, f_image, imageSize, cudaMemcpyDeviceToHost);
     memcpy(frequencyImage.data, f_outputImage, imageSize);

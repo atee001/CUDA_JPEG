@@ -34,7 +34,7 @@ __constant__ double IdctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
 
 __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image) {
 
-    __shared__ float cache[BLOCK_SIZE*BLOCK_SIZE];  
+    __shared__ double cache[BLOCK_SIZE*BLOCK_SIZE];  
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
     int x = threadIdx.x + (blockDim.x*blockIdx.x);    
 
@@ -75,13 +75,13 @@ __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image) 
 }
 
 //(T'*A)*T
-__global__ void IDCT(int numRows, int numCols, double *f_image, float *r_image) {
+__global__ void IDCT(int numRows, int numCols, double *f_image, double *r_image) {
 
-    __shared__ float cache[BLOCK_SIZE*BLOCK_SIZE];  
+    __shared__ double cache[BLOCK_SIZE*BLOCK_SIZE];  
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
     int x = threadIdx.x + (blockDim.x*blockIdx.x);    
 
-    float sum = 0.0f;
+    double sum = 0.0f;
 
     if(y < numRows && x < numCols){
         cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = f_image[y*numCols + x];
@@ -114,19 +114,19 @@ __global__ void IDCT(int numRows, int numCols, double *f_image, float *r_image) 
 }  
 
    
-void compress(const int numRows, const int numCols, float *d_image, float *f_image)
+void compress(const int numRows, const int numCols, double *d_image, double *f_image)
 {
 
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
-    dim3 blocksPerGrid(ceil(numCols/(float)threadsPerBlock.x), ceil(numRows/(float)threadsPerBlock.y), 1);
+    dim3 blocksPerGrid(ceil(numCols/(double)threadsPerBlock.x), ceil(numRows/(double)threadsPerBlock.y), 1);
     DCT<<<blocksPerGrid, threadsPerBlock>>>(numRows, numCols, d_image, f_image);
 
 }
 
-void decompress(const int numRows, const int numCols, float *f_image, float *r_image)
+void decompress(const int numRows, const int numCols, double *f_image, double *r_image)
 {
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
-    dim3 blocksPerGrid(ceil(numCols/(float)threadsPerBlock.x), ceil(numRows/(float)threadsPerBlock.y), 1);
+    dim3 blocksPerGrid(ceil(numCols/(double)threadsPerBlock.x), ceil(numRows/(double)threadsPerBlock.y), 1);
     IDCT<<<blocksPerGrid, threadsPerBlock>>>(numRows, numCols, f_image, r_image);
 
 }
