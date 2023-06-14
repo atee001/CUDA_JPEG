@@ -90,8 +90,8 @@ int main (int argc, char *argv[])
     float* f_outputImage = (float*)malloc(imageSize);
     cudaMemcpy(f_outputImage, f_image, imageSize, cudaMemcpyDeviceToHost);
     memcpy(frequencyImage.data, f_outputImage, imageSize);
-    frequencyImage += 1;  // Add 1 to handle log(0)
-    cv::log(frequencyImage, frequencyImage);
+
+    cv::log(cv::abs(frequencyImage) + 1, frequencyImage);
     cv::normalize(frequencyImage, frequencyImage, 0, 255, cv::NORM_MINMAX, CV_32F);
     frequencyImage.convertTo(frequencyImage, CV_8U);
     cv::namedWindow("Frequency Image", cv::WINDOW_NORMAL);
