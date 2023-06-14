@@ -47,9 +47,9 @@ I launch the kernel using 8 x 8 block size (since each sub-image is 8 x 8) and G
 
 2. I store D and Transposed D Matrix into Constant Memory. 
 
-3. I compute Matrix Multiplication of D * X and store the results back into shared memory.
+3. I compute Matrix Multiplication of D * A and store the results back into shared memory (A is 8 x 8 sub-image).
 
-4. I then Compute (D * X)*D' by Matrix Multiplying the intermediate results in (3) by D'. (Now Image is in Frequency Domain).
+4. I then Compute (D * A)*D' by Matrix Multiplying the intermediate results in (3) by D'. (Now Image is in Frequency Domain).
 
 To Quantize and discard high frequency components.
 
@@ -63,9 +63,9 @@ To Decompress I perform the Inverse Discrete Cosine Transform using tiled Matrix
 
 1. I store each 8 x 8 sub-image in frequency domain into shared memory.
 
-2. I compute Matrix Multiplication of D' * X and store the results back into shared memory.
+2. I compute Matrix Multiplication of D' * A and store the results back into shared memory.
 
-3. I then Compute (D' * X)* D by Matrix Multiplying the intermediate results in (3) by D. (Now Image is in Spatial Domain).
+3. I then Compute (D' * A)* D by Matrix Multiplying the intermediate results in (3) by D. (Now Image is in Spatial Domain).
 
 # Documentation/Results
 
