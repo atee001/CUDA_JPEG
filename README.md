@@ -69,7 +69,7 @@ To Decompress I perform the Inverse Discrete Cosine Transform using tiled Matrix
 
 # Documentation/Results
 
-Important!! Change the main code absolute path for the image near line 131:
+___Important!! Change the main code absolute path for the image near line 131:___
 
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/39a0298d-a493-479d-8467-756cb2daa270)
 
