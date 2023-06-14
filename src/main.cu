@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include "kernel.cu"
 
+double calculateMSE(const cv::Mat& image1, const cv::Mat& image2) {
+
+    cv::Mat diff;
+    cv::absdiff(image1, image2, diff); //absolute value difference    
+    cv::Mat squaredDiff = diff.mul(diff); // Calculate the squared difference    
+    cv::Scalar mse = cv::mean(squaredDiff); // Calculate the mean squared error
+    double mseValue = mse[0];  // single channel scaler since grayscale image
+    return mseValue/(image1.rows*image1.cols);
+}
 
 void createZonalFilter1(double* mask)
 {
@@ -240,12 +249,16 @@ int main (int argc, char *argv[])
     cudaFree(r_image);
     cudaFree(filter);
 
+     double mse = calculateMSE(image, resultImage);
+    printf("\nMSE of Original Image Vs Decompressed Image: %f\n", mse);
 
     // cv::destroyWindow("Image Window");
     cv::destroyWindow("Decompressed Image");
     cv::destroyWindow("Original Image");
     cv::destroyWindow("Frequency Image");
     /*************************************************************************/
+
+
     return 0;
 }
 
