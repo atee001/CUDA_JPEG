@@ -14,7 +14,7 @@ double calculateMSE(const cv::Mat& image1, const cv::Mat& image2) {
 
 cv::Mat createZonalFilter15()
 {
-    double maskData[64] = {
+    double maskData[8][8] = {
         1, 1, 1, 1, 1, 0, 0, 0,
         1, 1, 1, 1, 0, 0, 0, 0,
         1, 1, 1, 0, 0, 0, 0, 0,
@@ -29,7 +29,7 @@ cv::Mat createZonalFilter15()
 
 cv::Mat createZonalFilter32()
 {
-    double maskData[64] = {
+    double maskData[8][8] = {
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 0, 0,
@@ -44,7 +44,7 @@ cv::Mat createZonalFilter32()
 
 cv::Mat createZonalFilterAll()
 {
-    double maskData[64] = {
+    double maskData[8][8] = {
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1,
