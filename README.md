@@ -107,7 +107,7 @@ A better way to do this is to divide the image into multiple 32 x 32 sub-images 
 
 Kept facing indexing problems had to compare DCT and IDCT matrix multiplication results so I Had to Implement DCT and IDCT in Matlab to validate the results were correct. 
 
-Kept using the wrong index for element wise multiplication with Filter. Eventually figured out to use mod 8 since the filter repeats every 8 columns and rows. 
+Kept using the wrong index for element wise multiplication with Filter. Eventually figured out to use mod 8 since the filter repeats every 8 columns and 8 rows. 
 
 Couldn't see the Image in frequency as the pixel values were too small. Had to expand the dyamic range using Log of abs of image. Otherwise the entire frequency domain image was black. 
 
