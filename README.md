@@ -103,7 +103,7 @@ The results are as expected the program correctly implements JPEG Compression wi
 
 The kernel block size is 8 x 8 therefore the hardware is underutilized as well as DRAM Burst. 
 
-A better way to do this is to divide the image into 4 32 x 32 sub-images and compute the 8 x 8 DCT within a 32 x 32 sub image. Launch the kernel with 32 x 32 block size however indexing this would be harder.
+A better way to do this is to divide the image into multiple 32 x 32 sub-images and compute the 8 x 8 DCT within a 32 x 32 sub image. Launch the kernel with 32 x 32 block size however indexing this would be harder.
 
 Kept facing indexing problems had to compare DCT and IDCT matrix multiplication results so I Had to Implement DCT and IDCT in Matlab to validate the results were correct. 
 
