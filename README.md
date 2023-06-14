@@ -21,11 +21,11 @@ Step 4. Take the Inverse Discrete Cosine Transform of each 8 x 8 block. This con
 Formal Equation for Inverse Discrete Cosine Transform:
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/762603ba-e06a-4c15-8678-add4157c341f)
 
-#How is the GPU used to accelerate the application?
+# How is the GPU used to accelerate the application?
 
 The Discrete Cosine Transform and Inverse Discrete Cosine Transform of each 8 x 8 block can be computed in parallel as each block is independent each other.
 
-DCT can be computed using Matrix Multiplication following this equation:
+DCT can be computed using Matrix Multiplication following this equation where C is the DCT Matrix, X is the 8 x 8 Sub-Image, C^T is the Transposed DCT Matrix.
 
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/e6a93c1f-a053-4529-bf98-15e047126cc8)
 
@@ -33,7 +33,7 @@ Where C Matrix value is:
 
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/154f340b-8a6e-4b5e-83f4-507fec5f8777)
 
-Where Transposed C Matrix value is:
+Where C^T Matrix value is:
 
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/07a0d672-080e-469a-9cb7-772dcebdf7ef)
 
@@ -43,7 +43,9 @@ To compute the Discrete Cosine Transform I perform tiled Matrix Multiplication.
 
 2. I store C and Transposed C Matrix into Constant Memory. 
 
-3. I compute Matrix Multiplication of C * X. 
+3. I compute Matrix Multiplication of C * X and store the results back into shared memory.
+
+4. I then Compute (C * X)*C^T by Matrix Multiplying the intermediate results in 3 by C^T. 
 
 
 Quantization can also be applied in each 8 x 8 Block in parallel to remove high frequency components.
