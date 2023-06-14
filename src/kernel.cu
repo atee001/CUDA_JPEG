@@ -36,8 +36,7 @@ __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image, 
 
     __shared__ double cache[BLOCK_SIZE*BLOCK_SIZE];  
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
-    int x = threadIdx.x + (blockDim.x*blockIdx.x);    
-
+    int x = threadIdx.x + (blockDim.x*blockIdx.x); 
     double sum = 0.0;
 
     if(y < numRows && x < numCols){
@@ -63,13 +62,21 @@ __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image, 
         __syncthreads();
         //final result (I*T')
         f_image[y * numCols + x] = sum; //corresponding image in frequency domain
-
+        
+        __syncthreads();
+        //elemnent wise multiply with the filter
+        //every 8 is 0 
+        f_image[y * numCols + x] *= zonalFilter[((idy % 8)*numCols) + (idx % 8)];
         // if(threadIdx.y == 7 && threadIdx.x == 7){
             // f_image[y * numCols + x] = 0.0f;
         // }
 
+        
+
 
     }    
+
+
 
 }
 
