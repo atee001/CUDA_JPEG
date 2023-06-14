@@ -11,6 +11,21 @@ double calculateMSE(const cv::Mat& image1, const cv::Mat& image2) {
     return mseValue/(image1.rows*image1.cols);
 }
 
+void createZonalFilter1(double* mask)
+{
+    double maskData[64] = {
+        1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0
+    };
+    memcpy(mask, maskData, 64 * sizeof(double));
+}
+
 void createZonalFilter3(double* mask)
 {
     double maskData[64] = {
@@ -78,24 +93,28 @@ int main (int argc, char *argv[])
     double zonalFilter[64];
 
     printf("Choose the zonal filter:\n");
-    printf("1. Retain top-left 3x3 coefficients\n");
-    printf("2. Retain 15 coefficients\n");
-    printf("3. Retain 32 coefficients\n");
-    printf("4. Retain all coefficients\n");
-    printf("Enter your choice (1-3): ");
+    printf("1. Retain DC Component (top-left only 1 coefficient)\n");
+    printf("2. Retain top-left 3x3 DCT coefficients\n");
+    printf("3. Retain 15 DCT coefficients\n");
+    printf("4. Retain 32 DCT coefficients\n");
+    printf("5. Retain all DCT coefficients\n");
+    printf("Enter your choice (1-5): ");
     scanf("%d", &choice);
 
     switch (choice){
         case 1:
-            createZonalFilter3(zonalFilter);
+            createZonalFilter1(zonalFilter);
             break;
         case 2:
+            createZonalFilter3(zonalFilter);
+            break;
+        case 3:
             createZonalFilter15(zonalFilter);
             break;
-        case 3: 
+        case 4: 
             createZonalFilter32(zonalFilter);
             break;
-        case 4:
+        case 5:
             createZonalFilterAll(zonalFilter);
             break;
         default:
