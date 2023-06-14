@@ -183,8 +183,7 @@ int main (int argc, char *argv[])
     //     }
     // }
     // printf("Testing");
-    cv::Mat frequencyImage(image.rows, image.cols, CV_64F);
-    
+    cv::Mat frequencyImage(image.rows, image.cols, CV_64F);    
     memcpy(frequencyImage.data, f_outputImage, imageSize);
 
     cv::log(cv::abs(frequencyImage) + 1, frequencyImage);
@@ -196,6 +195,7 @@ int main (int argc, char *argv[])
         // printf("Testing");
 
     cv::namedWindow("Original Image", cv::WINDOW_NORMAL);
+    image.convertTo(image, CV_8U);
     cv::imshow("Original Image", image);
     cv::namedWindow("Decompressed Image", cv::WINDOW_NORMAL);
     cv::imshow("Decompressed Image", resultImage);   
