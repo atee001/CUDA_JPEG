@@ -66,7 +66,7 @@ To Decompress I perform the Inverse Discrete Cosine Transform using tiled Matrix
 
 3. I then Compute (D' * X)* D by Matrix Multiplying the intermediate results in (3) by D. (Now Image is in Spatial Domain).
 
-# Documentation/Evaluation:
+# Documentation/Results
 
 The main code converts the input image into 512 x 512 and Grayscale. This avoids using zero padding in case the Image rows and columns are evenly divisibly by 8. 
 Imporant!! Change the main code absolute path for the image near line 131:
@@ -85,6 +85,37 @@ The Terminal will prompt a mask size for how many coefficients to be kept enter 
 Once the User selects a mask size the Original, Frequency Domain, and Decompressed Image is shown:
 
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/5ffbfe24-66f5-4dbc-82f4-e288f5bf3529)
+
+Lena Example (Keeping 32 DCT Coefficients)
+
+![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/9e854a0a-5ddd-496f-8735-1d9ab677cdd2)
+
+Lena Example (Keeping 15 DCT Coefficients)
+
+![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/d90ce593-d79a-4f99-9af5-798458c3749c)
+
+The results are as expected the program correctly implements JPEG Compression without huffman encoding and decoding. The program is able to compute DCT, Quantization, and IDCT in parallel. 
+
+# Problems Faced
+
+The kernel block size is 8 x 8 therefore the hardware is underutilized as well as DRAM Burst. 
+
+A better way to do this is to divide the image into 4 32 x 32 blocks with 4 8 x 8 sub-image blocks in each 32 x 32 block and to launch the kernel with a block size of 32 x 32. 
+
+Kept facing indexing problems had to compare DCT and IDCT matrix multiplication results. Had to Implement DCT and IDCT in Matlab to validate the results were correct. 
+
+Kept using the wrong index for element wise multiplication with Filter. Eventually figured out to use mod 8 since the filter repeats every 8 columns and rows. 
+
+Couldn't see the Image in frequency as the pixel values were too small. Had to expand the dyamic range using Log of abs of image. Otherwise the entire frequency domain image was black. 
+
+Task	Breakdown
+Implementation of Discrete Cosine Tranform: Andrew Tee - 100%
+Implementation of Quantization using user defined filters: Andrew Tee - 100%
+Implementation of Inverse Discrete Cosine Transform: Andrew Tee - 100%
+Using OpenCV to display results and driver code: Andrew Tee - 100%
+Project Report - Andrew Tee - 100%
+
+
 
 
 
