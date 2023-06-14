@@ -12,7 +12,7 @@ double calculateMSE(const cv::Mat& image1, const cv::Mat& image2) {
     return mseValue/(image1.rows*image1.cols);
 }
 
-void createZonalFilter15(double mask[64])
+void createZonalFilter15(double* mask)
 {
     double maskData[64] = {
         1, 1, 1, 1, 1, 0, 0, 0,
@@ -24,10 +24,10 @@ void createZonalFilter15(double mask[64])
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0
     };
-    memcpy(mask, maskData, sizeof(maskData));
+    memcpy(mask, maskData, 64*sizeof(double));
 }
 
-void createZonalFilter32(double mask[64])
+void createZonalFilter32(double* mask)
 {
     double maskData[64] = {
         1, 1, 1, 1, 1, 1, 1, 1,
@@ -39,10 +39,10 @@ void createZonalFilter32(double mask[64])
         1, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0
     };
-    memcpy(mask, maskData, sizeof(maskData));
+    memcpy(mask, maskData, 64*sizeof(double));
 }
 
-void createZonalFilterAll(double mask[64])
+void createZonalFilterAll(double* mask)
 {
     double maskData[64] = {
         1, 1, 1, 1, 1, 1, 1, 1,
@@ -54,7 +54,7 @@ void createZonalFilterAll(double mask[64])
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1
     };
-    memcpy(mask, maskData, sizeof(maskData));
+    memcpy(mask, maskData, 64*sizeof(double));
 }
 
 

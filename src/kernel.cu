@@ -4,7 +4,6 @@
 #define BLOCK_SIZE 8
 
 using namespace cv;
-using namespace std;
 
 //DCT matrix T obtained from matlab dctmtx(8)
 __constant__ double dctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
