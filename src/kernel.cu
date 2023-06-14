@@ -34,12 +34,14 @@ __constant__ double IdctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
 __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image, double *zonalFilter) {
 
     __shared__ double cache[BLOCK_SIZE*BLOCK_SIZE];  
+    __shared__ double filter[BLOCK_SIZE*BLOCK_SIZE];
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
     int x = threadIdx.x + (blockDim.x*blockIdx.x); 
     double sum = 0.0;
 
     if(y < numRows && x < numCols){
         cache[threadIdx.y*BLOCK_SIZE + threadIdx.x] = d_image[y*numCols + x];
+        filter[threadIdx.y*BLOCK_SIZE + threadIdx.x] = zonalFilter[threadIdx.y*BLOCK_SIZE + threadIdx.x];
         __syncthreads();
 
         
@@ -65,7 +67,7 @@ __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image, 
         __syncthreads();
         //elemnent wise multiply with the filter
         //every 8 is 0 
-        f_image[y * numCols + x] *= zonalFilter[((y % 8)*8) + (x % 8)];
+        f_image[y * numCols + x] *= filter[((y % 8)*8) + (x % 8)];
     }    
 }
 
