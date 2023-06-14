@@ -1,4 +1,5 @@
 # JPEG Compression and Decompression in Parallel
+# Team Members: Andrew Tee
 # Demo Video: https://youtu.be/WkKCmrhht1o
 # Project Idea / Overview
 The goal of this project is to implement JPEG compression and decompression from scratch (no libraries except openCV to display images) without Huffman encoding in parallel. 
