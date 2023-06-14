@@ -12,8 +12,88 @@ double calculateMSE(const cv::Mat& image1, const cv::Mat& image2) {
     return mseValue/(image1.rows*image1.cols);
 }
 
+cv::Mat createZonalFilter15()
+{
+    double maskData[64] = {
+        1, 1, 1, 1, 1, 0, 0, 0,
+        1, 1, 1, 1, 0, 0, 0, 0,
+        1, 1, 1, 0, 0, 0, 0, 0,
+        1, 1, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0
+    };
+    return cv::Mat(8, 8, CV_64F, maskData);
+}
+
+cv::Mat createZonalFilter32()
+{
+    double maskData[64] = {
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 0, 0,
+        1, 1, 1, 1, 0, 0, 0, 0,
+        1, 1, 1, 0, 0, 0, 0, 0,
+        1, 1, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0
+    };
+    return cv::Mat(8, 8, CV_64F, maskData);
+}
+
+cv::Mat createZonalFilterAll()
+{
+    double maskData[64] = {
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1
+    };
+    return cv::Mat(8, 8, CV_64F, maskData);
+}
+
 int main (int argc, char *argv[])
 {
+    int choice;
+    
+    printf("Choose the zonal filter:\n");
+    printf("1. Retain 15 coefficients\n");
+    printf("2. Retain 32 coefficients\n");
+    printf("3. Retain all coefficients\n");
+    printf("Enter your choice (1-3): ");
+    scanf("%d", &choice);
+
+    cv::Mat zonalFilter;
+
+    switch (choice){
+    case 1:
+        zonalFilter = createZonalFilter15();
+        break;
+    case 2:
+        zonalFilter = createZonalFilter32();
+        break;
+    case 3:
+        zonalFilter = createZonalFilterAll();
+        break;
+    default:
+        printf("Invalid choice!\n");
+        return -1;
+    }
+
+    printf("Selected Zonal Filter:\n");
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            printf("%.0f ", zonalFilter.at<double>(i, j));
+        }
+        printf("\n");
+    }
 
     // Timer timer;
     cudaError_t cuda_ret;
