@@ -7,8 +7,7 @@ double calculateMSE(const cv::Mat& image1, const cv::Mat& image2) {
     cv::Mat diff;
     cv::absdiff(image1, image2, diff); //absolute value difference    
     cv::Mat squaredDiff = diff.mul(diff); // Calculate the squared difference    
-    cv::Scalar mse = cv::mean(squaredDiff); // Calculate the mean squared error
-    double mseValue = mse[0];  // single channel scaler since grayscale image
+    double mseValue = cv::mean(squaredDiff)[0]; // Calculate the mean squared error  // single channel scaler since grayscale image
     return mseValue/(image1.rows*image1.cols);
 }
 
