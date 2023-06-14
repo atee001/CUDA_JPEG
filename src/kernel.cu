@@ -65,7 +65,7 @@ __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image, 
         __syncthreads();
         //elemnent wise multiply with the filter
         //every 8 is 0 
-        f_image[y * numCols + x] *= zonalFilter[((y % 8)*numCols) + (x % 8)];
+        f_image[y * numCols + x] *= zonalFilter[((y % 8)*8) + (x % 8)];
         
 
 
