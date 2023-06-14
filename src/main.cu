@@ -84,7 +84,7 @@ int main (int argc, char *argv[])
     cv::Mat resultImage(image.rows, image.cols, CV_64F);
     memcpy(resultImage.data, h_outputImage, imageSize);
     cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_64F);
-
+    resultImage.convertTo(resultImage, CV_8U);
     // for (int i = 0; i < resultImage.rows; i++) {
     //     for (int j = 0; j < resultImage.cols; j++) {
     //         resultImage.at<uint8_t>(i, j) = static_cast<uint8_t>(h_outputImage[i * resultImage.cols + j]);
