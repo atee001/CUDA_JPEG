@@ -128,7 +128,7 @@ int main (int argc, char *argv[])
     // Initialize host variables ----------------------------------------------
     
     //please replace the full path of the image
-    cv::Mat image = cv::imread("/home/eemaj/atee/ee147/jpeg/CUDA_JPEG/images/roti.tiff");    
+    cv::Mat image = cv::imread("/home/eemaj/atee/ee147/jpeg/CUDA_JPEG/images/roti.jpg");    
     if (image.empty())
     {
         printf("Failed to read image exitting...");
