@@ -33,6 +33,18 @@ Where C Matrix value is:
 
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/154f340b-8a6e-4b5e-83f4-507fec5f8777)
 
+Where Transposed C Matrix value is:
+
+![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/07a0d672-080e-469a-9cb7-772dcebdf7ef)
+
+To compute the Discrete Cosine Transform I perform tiled Matrix Multiplication.
+
+1. I store each 8 x 8 sub-image into shared memory.
+
+2. I store C and Transposed C Matrix into Constant Memory. 
+
+3. I compute Matrix Multiplication of C * X. 
+
 
 Quantization can also be applied in each 8 x 8 Block in parallel to remove high frequency components.
 Shared Memory is used for 8 x 8 Matrix Multiplication to improve memory access speed.
