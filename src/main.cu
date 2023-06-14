@@ -23,15 +23,15 @@ int main (int argc, char *argv[])
     printf("\nSetting up the problem..."); fflush(stdout);
     // startTime(&timer);
 
-    // float *A_h, *B_h, *C_h;
-    // float *A_d, *B_d, *C_d;
+    // double *A_h, *B_h, *C_h;
+    // double *A_d, *B_d, *C_d;
     // size_t mat_sz;
     // unsigned matDim;
     // dim3 dim_grid, dim_block;
-    size_t imageSize = image.rows*image.cols*sizeof(float);
+    size_t imageSize = image.rows*image.cols*sizeof(double);
 
     if (argc == 1) {
-        imageSize = image.rows*image.cols*sizeof(float);
+        imageSize = image.rows*image.cols*sizeof(double);
     } 
     else {
         printf("\n    Invalid input parameters!"
@@ -39,9 +39,9 @@ int main (int argc, char *argv[])
       "\n");
         exit(0);
     }
-    cv::Mat image_float; 
-    image.convertTo(image_float, CV_32F);
-    float *d_image, *f_image, *r_image;
+    cv::Mat image_double; 
+    image.convertTo(image_double, CV_32F);
+    double *d_image, *f_image, *r_image;
    
     cudaMalloc((void**)&d_image, imageSize);
     cudaMalloc((void**)&f_image, imageSize);
@@ -49,7 +49,7 @@ int main (int argc, char *argv[])
 
     cudaDeviceSynchronize();    
 
-    cudaMemcpy(d_image, image_float.ptr<float>(), imageSize, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_image, image_double.ptr<double>(), imageSize, cudaMemcpyHostToDevice);
 
     printf("Testing");
     
@@ -66,7 +66,7 @@ int main (int argc, char *argv[])
     cuda_ret = cudaDeviceSynchronize();
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
 
-    float* h_outputImage = (float*)malloc(imageSize);
+    double* h_outputImage = (double*)malloc(imageSize);
     cudaMemcpy(h_outputImage, r_image, imageSize, cudaMemcpyDeviceToHost);
 
     cudaDeviceSynchronize();   
@@ -87,12 +87,12 @@ int main (int argc, char *argv[])
     }
 
     cv::Mat frequencyImage(image.rows, image.cols, CV_32F);
-    float* f_outputImage = (float*)malloc(imageSize);
+    double* f_outputImage = (double*)malloc(imageSize);
     cudaMemcpy(f_outputImage, f_image, imageSize, cudaMemcpyDeviceToHost);
     memcpy(frequencyImage.data, f_outputImage, imageSize);
 
     cv::log(cv::abs(frequencyImage) + 1, frequencyImage);
-    cv::normalize(frequencyImage, frequencyImage, 0, 255, cv::NORM_MINMAX, CV_32F);
+    cv::normalize(frequencyImage, frequencyImage, 0, 255, cv::NORM_MINMAX, CV_64F);
     frequencyImage.convertTo(frequencyImage, CV_8U);
     cv::namedWindow("Frequency Image", cv::WINDOW_NORMAL);
     cv::imshow("Frequency Image", frequencyImage);    
