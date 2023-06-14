@@ -103,7 +103,7 @@ The kernel block size is 8 x 8 therefore the hardware is underutilized as well a
 
 A better way to do this is to divide the image into 4 32 x 32 blocks with 4 8 x 8 sub-image blocks in each 32 x 32 block and to launch the kernel with a block size of 32 x 32. 
 
-Kept facing indexing problems had to compare DCT and IDCT matrix multiplication results. Had to Implement DCT and IDCT in Matlab to validate the results were correct. 
+Kept facing indexing problems had to compare DCT and IDCT matrix multiplication results so I Had to Implement DCT and IDCT in Matlab to validate the results were correct. 
 
 Kept using the wrong index for element wise multiplication with Filter. Eventually figured out to use mod 8 since the filter repeats every 8 columns and rows. 
 
