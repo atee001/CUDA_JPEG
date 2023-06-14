@@ -95,7 +95,7 @@ int main (int argc, char *argv[])
         case 3: 
             createZonalFilter32(zonalFilter);
             break;
-        case 3:
+        case 4:
             createZonalFilterAll(zonalFilter);
             break;
         default:
