@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include "kernel.cu"
 
+double calculateMSE(const cv::Mat& image1, const cv::Mat& image2) {
+
+    cv::Mat diff;
+    cv::absdiff(image1, image2, diff); //absolute value difference    
+    cv::Mat squaredDiff = diff.mul(diff); // Calculate the squared difference    
+    cv::Scalar mse = cv::mean(squaredDiff); // Calculate the mean squared error
+    double mseValue = mse;  // single channel scaler since grayscale image
+    return mseValue;
+}
+
 int main (int argc, char *argv[])
 {
 
@@ -122,6 +132,12 @@ int main (int argc, char *argv[])
     cv::destroyWindow("Decompressed Image");
     cv::destroyWindow("Original Image");
     cv::destroyWindow("Frequency Image");
+
+    double mse = calculateMSE(image, resultImage);
+    std::cout << "MSE of Original Image Vs Decompressed Image: " << mse << std::endl;
+
+
+
     /*************************************************************************/
     return 0;
 }
