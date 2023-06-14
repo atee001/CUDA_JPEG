@@ -1,4 +1,5 @@
 # JPEG Compression and Decompression in Parallel
+# Demo Video: https://youtu.be/WkKCmrhht1o
 # Project Idea / Overview
 The goal of this project is to implement JPEG compression and decompression from scratch (no libraries except openCV to display images) without Huffman encoding in parallel. 
 The JPEG Compression and Decompression follows this block diagram:
@@ -25,9 +26,9 @@ Formal Equation for Inverse Discrete Cosine Transform:
 
 The Discrete Cosine Transform and Inverse Discrete Cosine Transform of each 8 x 8 block can be computed in parallel as each block is independent each other.
 
-DCT can be computed using Matrix Multiplication following this equation where C is the DCT Matrix, X is the 8 x 8 Sub-Image, C^T is the Transposed DCT Matrix.
+DCT and Inverse DCT can be computed using Matrix Multiplication following this equation where D is the DCT Matrix, A is the 8 x 8 Sub-Image, D' is the Transposed DCT Matrix.
 
-![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/e6a93c1f-a053-4529-bf98-15e047126cc8)
+![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/341f5d99-9973-4022-8dc3-a8e4c40e6cad)
 
 Where C Matrix value is:
 
@@ -41,26 +42,25 @@ To compute the Discrete Cosine Transform I perform tiled Matrix Multiplication.
 
 1. I store each 8 x 8 sub-image into shared memory.
 
-2. I store C and Transposed C Matrix into Constant Memory. 
+2. I store D and Transposed D Matrix into Constant Memory. 
 
-3. I compute Matrix Multiplication of C * X and store the results back into shared memory.
+3. I compute Matrix Multiplication of D * X and store the results back into shared memory.
 
-4. I then Compute (C * X)*C^T by Matrix Multiplying the intermediate results in 3 by C^T. 
+4. I then Compute (D * X)*D' by Matrix Multiplying the intermediate results in (3) by C^T. (Now Image is in Frequency Domain).
 
+To Quantize and discard high frequency components.
 
-Quantization can also be applied in each 8 x 8 Block in parallel to remove high frequency components.
-Shared Memory is used for 8 x 8 Matrix Multiplication to improve memory access speed.
-Constant Memory is used to store the DCT Matrix and Transposed DCT Matrix as these coefficients are constant. 
+1. I store the User Defined Filter in shared memory. 
 
-Implementation details
-Documentation on how to run your code
-Evaluation/Results
-Problems faced
-On the last page, include a table with a list of tasks for the project, and a percentage breakdown of contribution of each team member for the tasks. You can choose the granularity of task breakdown here.
+2. I then elementwise multiply each 8 x 8 sub-image (Frequency Domain) by the User Defined Filter. 
 
-Implemented JPEG Compression and Decompression in CUDA.
-Implemented Discrete Cosine Transform, Inverse Discrete Transform, Zonal Coding from scratch and in parallel. 
-Utilized shared memory to do matrix multiplication for DCT. 
-Utilized constant memory to store DCT predefined 8 x 8 Matrix. 
-Used openCV to display the images.
-Demo Video: https://youtu.be/WkKCmrhht1o
+3. Now the Image is Compressed.
+
+To Decompress I perform the Inverse Discrete Cosine Transform using tiled Matrix Multiplication. 
+
+1. I store each 8 x 8 sub-image in frequency domain into shared memory.
+
+2. I compute Matrix Multiplication of D' * X and store the results back into shared memory.
+
+3. I then Compute (D' * X)* D by Matrix Multiplying the intermediate results in (3) by D. (Now Image is in Spatial Domain).
+
