@@ -34,7 +34,7 @@ __constant__ double IdctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
 __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image, double *zonalFilter) {
 
     __shared__ double cache[BLOCK_SIZE*BLOCK_SIZE];  
-    __shared__ double filter[BLOCK_SIZE*BLOCK_SIZE];
+    __shared__ double filter_cache[BLOCK_SIZE*BLOCK_SIZE];
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
     int x = threadIdx.x + (blockDim.x*blockIdx.x); 
     double sum = 0.0;
