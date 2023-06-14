@@ -93,7 +93,7 @@ __global__ void IDCT(int numRows, int numCols, double *f_image, double *r_image)
 
         __syncthreads();
 
-        sum = 0.0f;
+        sum = 0.0;
         //temp * T multiply rows of cache with columns of T
         for(int k = 0; k < BLOCK_SIZE; k++){
             sum += dctMatrix[threadIdx.y*BLOCK_SIZE + k] * cache[k*BLOCK_SIZE + threadIdx.x];
