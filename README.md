@@ -24,6 +24,7 @@ Formal Equation for Inverse Discrete Cosine Transform:
 #How is the GPU used to accelerate the application?
 
 The Discrete Cosine Transform and Inverse Discrete Cosine Transform of each 8 x 8 block can be computed in parallel as each block is independent each other.
+
 DCT can be computed using Matrix Multiplication following this equation:
 
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/e6a93c1f-a053-4529-bf98-15e047126cc8)
