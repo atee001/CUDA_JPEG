@@ -67,10 +67,6 @@ __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image, 
         //elemnent wise multiply with the filter
         //every 8 is 0 
         f_image[y * numCols + x] *= zonalFilter[((y % 8)*numCols) + (x % 8)];
-        // if(threadIdx.y == 7 && threadIdx.x == 7){
-            // f_image[y * numCols + x] = 0.0f;
-        // }
-
         
 
 

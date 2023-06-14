@@ -87,7 +87,7 @@ int main (int argc, char *argv[])
     }
 
     printf("Selected Zonal Filter:\n");
-    
+
     for (int i = 0; i < 8; i++){
         for (int j = 0; j < 8; j++){
             printf("%.0f ", zonalFilter[i * 8 + j]);
@@ -146,7 +146,7 @@ int main (int argc, char *argv[])
     
     cudaDeviceSynchronize();  
 
-    compress(image.rows, image.cols, d_image, f_image, zonalFilter); //returns image in frequency domain
+    compress(image.rows, image.cols, d_image, f_image, filter); //returns image in frequency domain
     
     cudaDeviceSynchronize();
     decompress(image.rows, image.cols, f_image, r_image); //returns image in spatial domain
