@@ -119,7 +119,7 @@ int main (int argc, char *argv[])
     // unsigned matDim;
     // dim3 dim_grid, dim_block;
     size_t imageSize = image.rows*image.cols*sizeof(double);
-
+    size_t filterSize = 8*8*sizeof(double);
     if (argc == 1) {
         imageSize = image.rows*image.cols*sizeof(double);
     } 
@@ -131,21 +131,22 @@ int main (int argc, char *argv[])
     }
     cv::Mat image_double; 
     image.convertTo(image_double, CV_64F);
-    double *d_image, *f_image, *r_image;
+    double *d_image, *f_image, *r_image, *filter;
    
     cudaMalloc((void**)&d_image, imageSize);
     cudaMalloc((void**)&f_image, imageSize);
     cudaMalloc((void**)&r_image, imageSize);
+    cudaMalloc((void**)&filter, filterSize);
 
     cudaDeviceSynchronize();    
 
     cudaMemcpy(d_image, image_double.ptr<double>(), imageSize, cudaMemcpyHostToDevice);
-
+    cudaMemcpy(filter, zonalFilter, filterSize, cudaMemcpyHostToDevice);
     // printf("Testing");
     
     cudaDeviceSynchronize();  
 
-    compress(image.rows, image.cols, d_image, f_image); //returns image in frequency domain
+    compress(image.rows, image.cols, d_image, f_image, zonalFilter); //returns image in frequency domain
     
     cudaDeviceSynchronize();
     decompress(image.rows, image.cols, f_image, r_image); //returns image in spatial domain
@@ -207,6 +208,7 @@ int main (int argc, char *argv[])
     cudaFree(d_image);
     cudaFree(f_image);
     cudaFree(r_image);
+    cudaFree(filter);
 
 
     // cv::destroyWindow("Image Window");

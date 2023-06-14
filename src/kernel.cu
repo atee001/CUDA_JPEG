@@ -32,7 +32,7 @@ __constant__ double IdctMatrix[BLOCK_SIZE * BLOCK_SIZE] = {
 
 //F(p,q) = T * f(x,y) * T'
 
-__global__ void DCT(int numRows, int numCols, double *d_image, double *f_image) {
+__global__ void DCT(int numRows, int numCols, double *d_image, double *f_image, double *zonalFilter) {
 
     __shared__ double cache[BLOCK_SIZE*BLOCK_SIZE];  
     int y = threadIdx.y + (blockDim.y*blockIdx.y);
@@ -112,12 +112,12 @@ __global__ void IDCT(int numRows, int numCols, double *f_image, double *r_image)
 
 }  
    
-void compress(const int numRows, const int numCols, double *d_image, double *f_image)
+void compress(const int numRows, const int numCols, double *d_image, double *f_image, double *zonalFilter)
 {
 
     dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
     dim3 blocksPerGrid(ceil(numCols/(double)threadsPerBlock.x), ceil(numRows/(double)threadsPerBlock.y), 1);
-    DCT<<<blocksPerGrid, threadsPerBlock>>>(numRows, numCols, d_image, f_image);
+    DCT<<<blocksPerGrid, threadsPerBlock>>>(numRows, numCols, d_image, f_image, zonalFilter);
 
 }
 
