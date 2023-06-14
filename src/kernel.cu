@@ -66,7 +66,7 @@ __global__ void DCT(int numRows, int numCols, double *d_image, double *f_image) 
         f_image[y * numCols + x] = sum; //corresponding image in frequency domain
 
         // if(threadIdx.y == 7 && threadIdx.x == 7){
-            f_image[y * numCols + x] = 0.0f;
+            // f_image[y * numCols + x] = 0.0f;
         // }
 
 
