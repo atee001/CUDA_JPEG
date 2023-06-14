@@ -58,7 +58,7 @@ int main (int argc, char *argv[])
     compress(image.rows, image.cols, d_image, f_image); //returns image in frequency domain
     cudaDeviceSynchronize();
     decompress(image.rows, image.cols, f_image, r_image); //returns image in spatial domain
-    cudaDeviceSynchronize();
+    // cudaDeviceSynchronize();
     // LaunchIDCT(image.rows, image.cols, IDCT_res, temp);
     // cudaDeviceSynchronize();
     // LaunchDCT(image.rows, image.cols, temp, result);
@@ -67,7 +67,9 @@ int main (int argc, char *argv[])
     if(cuda_ret != cudaSuccess) printf("Unable to launch kernel");
 
     double* h_outputImage = (double*)malloc(imageSize);
-    cudaMemcpy(h_outputImage, r_image, imageSize, cudaMemcpyDeviceToHost);
+    double* f_outputImage = (double*)malloc(imageSize);
+    cudaMemcpy(h_outputImage, r_image, imageSize, cudaMemcpyDeviceToHost);    
+    cudaMemcpy(f_outputImage, f_image, imageSize, cudaMemcpyDeviceToHost);
 
     cudaDeviceSynchronize();   
 
@@ -79,16 +81,18 @@ int main (int argc, char *argv[])
     // Convert the matrix to CV_8U data type
 
 
-    cv::Mat resultImage(image.rows, image.cols, CV_8U);
-    for (int i = 0; i < resultImage.rows; i++) {
-        for (int j = 0; j < resultImage.cols; j++) {
-            resultImage.at<uint8_t>(i, j) = static_cast<uint8_t>(h_outputImage[i * resultImage.cols + j]);
-        }
-    }
+    cv::Mat resultImage(image.rows, image.cols, CV_64F);
+    memcpy(resultImage.data, h_outputImage, imageSize);
+    cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_64F);
+
+    // for (int i = 0; i < resultImage.rows; i++) {
+    //     for (int j = 0; j < resultImage.cols; j++) {
+    //         resultImage.at<uint8_t>(i, j) = static_cast<uint8_t>(h_outputImage[i * resultImage.cols + j]);
+    //     }
+    // }
 
     cv::Mat frequencyImage(image.rows, image.cols, CV_64F);
-    double* f_outputImage = (double*)malloc(imageSize);
-    cudaMemcpy(f_outputImage, f_image, imageSize, cudaMemcpyDeviceToHost);
+    
     memcpy(frequencyImage.data, f_outputImage, imageSize);
 
     cv::log(cv::abs(frequencyImage) + 1, frequencyImage);
