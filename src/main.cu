@@ -83,7 +83,7 @@ int main (int argc, char *argv[])
 
     cv::Mat resultImage(image.rows, image.cols, CV_64F);
     memcpy(resultImage.data, h_outputImage, imageSize);
-    cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_64F);
+    cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_8U);
     resultImage.convertTo(resultImage, CV_8U);
     // for (int i = 0; i < resultImage.rows; i++) {
     //     for (int j = 0; j < resultImage.cols; j++) {
