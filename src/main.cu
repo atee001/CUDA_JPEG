@@ -94,7 +94,7 @@ int main (int argc, char *argv[])
 
     printf("Choose the zonal filter:\n");
     printf("1. Retain DC Component (top-left only 1 coefficient)\n");
-    printf("2. Retain top-left 3x3 DCT coefficients\n");
+    printf("2. Retain 6 DCT coefficients\n");
     printf("3. Retain 15 DCT coefficients\n");
     printf("4. Retain 32 DCT coefficients\n");
     printf("5. Retain all DCT coefficients\n");
