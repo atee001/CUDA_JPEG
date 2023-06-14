@@ -12,61 +12,56 @@ double calculateMSE(const cv::Mat& image1, const cv::Mat& image2) {
     return mseValue/(image1.rows*image1.cols);
 }
 
-cv::Mat createZonalFilter15()
+void createZonalFilter15(double mask[8][8])
 {
-    cv::Mat zonalFilter = cv::Mat::zeros(8, 8, CV_64F);
     double maskData[8][8] = {
-        1, 1, 1, 1, 1, 0, 0, 0,
-        1, 1, 1, 1, 0, 0, 0, 0,
-        1, 1, 1, 0, 0, 0, 0, 0,
-        1, 1, 0, 0, 0, 0, 0, 0,
-        1, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0
+        {1, 1, 1, 1, 1, 0, 0, 0},
+        {1, 1, 1, 1, 0, 0, 0, 0},
+        {1, 1, 1, 0, 0, 0, 0, 0},
+        {1, 1, 0, 0, 0, 0, 0, 0},
+        {1, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0}
     };
-    memcpy(zonalFilter.data, maskData, sizeof(maskData));
-    return zonalFilter;
+    memcpy(mask, maskData, sizeof(maskData));
 }
 
-cv::Mat createZonalFilter32()
+void createZonalFilter32(double mask[8][8])
 {
-    cv::Mat zonalFilter = cv::Mat::zeros(8, 8, CV_64F);
     double maskData[8][8] = {
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 0, 0,
-        1, 1, 1, 1, 0, 0, 0, 0,
-        1, 1, 1, 0, 0, 0, 0, 0,
-        1, 1, 0, 0, 0, 0, 0, 0,
-        1, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0
+        {1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 0, 0},
+        {1, 1, 1, 1, 0, 0, 0, 0},
+        {1, 1, 1, 0, 0, 0, 0, 0},
+        {1, 1, 0, 0, 0, 0, 0, 0},
+        {1, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0}
     };
-    memcpy(zonalFilter.data, maskData, sizeof(maskData));
-    return zonalFilter;
+    memcpy(mask, maskData, sizeof(maskData));
 }
 
-cv::Mat createZonalFilterAll()
+void createZonalFilterAll(double mask[8][8])
 {
-    cv::Mat zonalFilter = cv::Mat::zeros(8, 8, CV_64F);
     double maskData[8][8] = {
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1
+        {1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1}
     };
-    memcpy(zonalFilter.data, maskData, sizeof(maskData));
-    return zonalFilter;
+    memcpy(mask, maskData, sizeof(maskData));
 }
 
 int main (int argc, char *argv[])
 {
     int choice;
-    
+    double zonalFilter[8][8];
+
     printf("Choose the zonal filter:\n");
     printf("1. Retain 15 coefficients\n");
     printf("2. Retain 32 coefficients\n");
@@ -74,17 +69,16 @@ int main (int argc, char *argv[])
     printf("Enter your choice (1-3): ");
     scanf("%d", &choice);
 
-    cv::Mat zonalFilter;
-
-    switch (choice){
+   switch (choice)
+    {
     case 1:
-        zonalFilter = createZonalFilter15();
+        createZonalFilter15(zonalFilter);
         break;
     case 2:
-        zonalFilter = createZonalFilter32();
+        createZonalFilter32(zonalFilter);
         break;
     case 3:
-        zonalFilter = createZonalFilterAll();
+        createZonalFilterAll(zonalFilter);
         break;
     default:
         printf("Invalid choice!\n");
@@ -96,7 +90,7 @@ int main (int argc, char *argv[])
     {
         for (int j = 0; j < 8; j++)
         {
-            printf("%.0f ", zonalFilter.at<double>(i, j));
+            printf("%.0f ", zonalFilter[i][j]);
         }
         printf("\n");
     }
@@ -147,11 +141,12 @@ int main (int argc, char *argv[])
 
     cudaMemcpy(d_image, image_double.ptr<double>(), imageSize, cudaMemcpyHostToDevice);
 
-    printf("Testing");
+    // printf("Testing");
     
     cudaDeviceSynchronize();  
 
     compress(image.rows, image.cols, d_image, f_image); //returns image in frequency domain
+    
     cudaDeviceSynchronize();
     decompress(image.rows, image.cols, f_image, r_image); //returns image in spatial domain
     // cudaDeviceSynchronize();
@@ -172,7 +167,7 @@ int main (int argc, char *argv[])
     // for (unsigned int i = 0; i < image.rows * image.cols; i++) {
     //     h_outputImage[i] *= 255.0;
     // }
-    
+        // printf("Testing");
 
     // Convert the matrix to CV_8U data type
 
@@ -186,7 +181,7 @@ int main (int argc, char *argv[])
     //         resultImage.at<uint8_t>(i, j) = static_cast<uint8_t>(h_outputImage[i * resultImage.cols + j]);
     //     }
     // }
-
+    // printf("Testing");
     cv::Mat frequencyImage(image.rows, image.cols, CV_64F);
     
     memcpy(frequencyImage.data, f_outputImage, imageSize);
@@ -197,7 +192,7 @@ int main (int argc, char *argv[])
     cv::namedWindow("Frequency Image", cv::WINDOW_NORMAL);
     cv::imshow("Frequency Image", frequencyImage);    
     // cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_8U);
-    
+        // printf("Testing");
 
     cv::namedWindow("Original Image", cv::WINDOW_NORMAL);
     cv::imshow("Original Image", image);
@@ -220,7 +215,7 @@ int main (int argc, char *argv[])
     cv::destroyWindow("Frequency Image");
 
     double mse = calculateMSE(image, resultImage);
-    std::cout << "MSE of Original Image Vs Decompressed Image: " << mse << std::endl;
+    printf("\nMSE of Original Image Vs Decompressed Image: %f\n", mse);
 
 
 
