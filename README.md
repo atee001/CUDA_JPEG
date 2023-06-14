@@ -85,7 +85,7 @@ The Terminal will prompt a mask size for how many coefficients to be kept enter 
 
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/eeece8bf-ae73-4220-98ed-5aa5c4953335)
 
-Once the User selects a mask size the Original, Frequency Domain, and Decompressed Image is shown:
+Once the User selects a mask size the Original, Frequency Domain, and Decompressed Image is shown (Keeping all DCT 64 Coefficients)
 
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/5ffbfe24-66f5-4dbc-82f4-e288f5bf3529)
 
