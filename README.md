@@ -110,10 +110,15 @@ Kept using the wrong index for element wise multiplication with Filter. Eventual
 Couldn't see the Image in frequency as the pixel values were too small. Had to expand the dyamic range using Log of abs of image. Otherwise the entire frequency domain image was black. 
 
 Task	Breakdown
+
 Implementation of Discrete Cosine Tranform: Andrew Tee - 100%
+
 Implementation of Quantization using user defined filters: Andrew Tee - 100%
+
 Implementation of Inverse Discrete Cosine Transform: Andrew Tee - 100%
+
 Using OpenCV to display results and driver code: Andrew Tee - 100%
+
 Project Report - Andrew Tee - 100%
 
 
