@@ -1,7 +1,6 @@
 # CUDA_JPEG
-Project Idea / Overview
+# Project Idea / Overview
 The goal of this project is to implement JPEG compression and decompression from scratch (no cuFFT) without Huffman encoding in parallel. 
-
 The JPEG Compression and Decompression follows this block diagram:
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/84dfd51c-5b03-4227-b622-96c7b590df3e)
 Step 1. Divide the image into 8 x 8 blocks
@@ -10,7 +9,11 @@ The higher frequencies are are the bottom right of each 8 x 8 block and the lowe
 We can do this because the Human Visual System is less sensitive to changes in the High frequencies. 
 Formal Equation for Discrete Cosine Transform:
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/2268004f-1bbd-4264-9f60-893573a43d52)
+
 Step 3. Remove high frequency components of each 8 x 8 block using a mask. Give user the choice of how many coefficients they want to keep.
+
+![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/474044e6-9a72-439b-ab65-a90c514b10b3)
+
 Step 4. Take the Inverse Discrete Cosine Transform of each 8 x 8 block. This converts the image back to the spatial domain without visually redundant information.
 Formal Equation for Inverse Discrete Cosine Transform:
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/762603ba-e06a-4c15-8678-add4157c341f)
