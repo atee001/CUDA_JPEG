@@ -216,7 +216,7 @@ int main (int argc, char *argv[])
     cv::destroyWindow("Original Image");
     cv::destroyWindow("Frequency Image");
 
-    double mse = calculateMSE(image, image);
+    double mse = calculateMSE(image, resultImage);
     printf("\nMSE of Original Image Vs Decompressed Image: %f\n", mse);
 
 
