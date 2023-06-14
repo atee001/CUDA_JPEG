@@ -96,8 +96,8 @@ int main (int argc, char *argv[])
     memcpy(frequencyImage.data, f_outputImage, imageSize);
 
     cv::log(cv::abs(frequencyImage) + 1, frequencyImage);
-    cv::normalize(frequencyImage, frequencyImage, 0, 255, cv::NORM_MINMAX, CV_64F);
-    frequencyImage.convertTo(frequencyImage, CV_8U);
+    cv::normalize(frequencyImage, frequencyImage, 0, 255, cv::NORM_MINMAX, CV_8U);
+    // frequencyImage.convertTo(frequencyImage, CV_8U);
     cv::namedWindow("Frequency Image", cv::WINDOW_NORMAL);
     cv::imshow("Frequency Image", frequencyImage);    
     // cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_8U);

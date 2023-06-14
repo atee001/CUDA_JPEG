@@ -112,7 +112,6 @@ __global__ void IDCT(int numRows, int numCols, double *f_image, double *r_image)
     }    
 
 }  
-
    
 void compress(const int numRows, const int numCols, double *d_image, double *f_image)
 {
