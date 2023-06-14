@@ -3,7 +3,8 @@
 The goal of this project is to implement JPEG compression and decompression from scratch (no cuFFT) without Huffman encoding in parallel. 
 The JPEG Compression and Decompression follows this block diagram:
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/84dfd51c-5b03-4227-b622-96c7b590df3e)
-Step 1. Divide the image into 8 x 8 blocks \n
+Step 1. Divide the image into 8 x 8 blocks 
+
 Step 2. Take the Discrete Cosine Transform of each 8 x 8 block. This converts the image to the frequency domain. 
 The higher frequencies are are the bottom right of each 8 x 8 block and the lower frequencies are the top left corner. 
 We can do this because the Human Visual System is less sensitive to changes in the High frequencies. 
