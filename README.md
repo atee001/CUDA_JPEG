@@ -69,9 +69,11 @@ To Decompress I perform the Inverse Discrete Cosine Transform using tiled Matrix
 
 # Documentation/Results
 
-The main code converts the input image into 512 x 512 and Grayscale. This avoids using zero padding in case the Image rows and columns are evenly divisibly by 8. 
-Imporant!! Change the main code absolute path for the image near line 131:
+Important!! Change the main code absolute path for the image near line 131:
+
 ![image](https://github.com/atee001/CUDA_JPEG/assets/80326381/39a0298d-a493-479d-8467-756cb2daa270)
+
+The main code resizes the input image into 512 x 512 and Grayscale. This avoids using zero padding in case the Image rows and columns are evenly divisibly by 8. 
 
 To run the code type the following commands:
 
