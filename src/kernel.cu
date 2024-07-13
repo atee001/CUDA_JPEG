@@ -23,7 +23,7 @@ __global__ void DCT(int numRows, int numCols, double *d_image, double *result_im
 	if(row < numRows && col < numCols)
 	{
 		int startX = col - (FILTER_SIZE/2);
-		int startY = col - (FILTER_SIZE/2);
+		int startY = row - (FILTER_SIZE/2);
 		double temp = 0.0;
 
 		for(int i = 0; i < numRows; i++)
@@ -48,7 +48,7 @@ __global__ void DCT(int numRows, int numCols, double *d_image, double *result_im
 void compress(const int numRows, const int numCols, double *d_image, double* result_image)
 {
 
-    dim3 threadsPerBlock(BLOCK_SIZE, BLOCK_SIZE, 1);
+    dim3 threadsPerBlock(32, 32, 1);
     dim3 blocksPerGrid(ceil(numCols/(double)threadsPerBlock.x), ceil(numRows/(double)threadsPerBlock.y), 1);
     DCT<<<blocksPerGrid, threadsPerBlock>>>(numRows, numCols, d_image, result_image);
 
