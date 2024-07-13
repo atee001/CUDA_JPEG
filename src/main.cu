@@ -80,11 +80,11 @@ int main (int argc, char *argv[])
 
     cv::Mat resultImage(image.rows, image.cols, CV_64F);
     memcpy(resultImage.data, h_outputImage, imageSize);
-    cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_8U);
+    //cv::normalize(resultImage, resultImage, 0, 255, cv::NORM_MINMAX, CV_8U);
     resultImage.convertTo(resultImage, CV_8U);
     cv::imwrite("edgeImage.jpg", resultImage);
 	
-    //cv::namedWindow("Filtered Image", cv::WINDOW_NORMAL);
+   // cv::namedWindow("Filtered Image", cv::WINDOW_NORMAL);
     //cv::imshow("Filtered Image", resultImage);    
 
     //cv::namedWindow("Original Image", cv::WINDOW_NORMAL);
